@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -9,9 +10,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
+			VBox root = (VBox)FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
 			Scene scene = new Scene(root,1024,768);
-			scene.getStylesheets().add(getClass().getClassLoader().getResource("css/application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
