@@ -1,12 +1,20 @@
 package DAO;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
-public class BooksDAO implements DAO {
+public class BookDAO implements DAO {
 
     @Override
     public Object get(int id) throws SQLException {
+        DBConnector db = new DBConnector();
+        Connection con = db.getConnection();
+        Statement stmt = con.createStatement();
+        
+        ResultSet rs = stmt.executeQuery("SELECT * FROM book WHERE id = " + id);
         return null;
     }
 
