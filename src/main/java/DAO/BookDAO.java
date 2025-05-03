@@ -1,45 +1,36 @@
 package DAO;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.zaxxer.hikari.HikariDataSource;
+
+import java.sql.*;
 import java.util.List;
 
 public class BookDAO implements DAO {
+    HikariDataSource ds = DBConnectionPool.getDataSource();
+
 
     @Override
-    public Object get(int id) throws SQLException {
-        DBConnector db = new DBConnector();
-        Connection con = db.getConnection();
-        Statement stmt = con.createStatement();
-        
-        ResultSet rs = stmt.executeQuery("SELECT * FROM book WHERE id = " + id);
+    public Object get(int id)  {
+        Connection connection = ds.getConnection();
+
+        String query = "SELECT * FROM books WHERE id = ?";
+        PreparedStatement prpStmt = connection.prepareStatement(query);
+        prpStmt.setInt(1, id);
+        ResultSet rs = prpStmt.executeQuery();
         return null;
     }
 
     @Override
-    public List getAll() throws SQLException {
+    public List getAll() {
         return List.of();
     }
 
     @Override
-    public int save(Object o) throws SQLException {
+    public int update(Object o) {
         return 0;
     }
 
-    @Override
-    public int insert(Object o) throws SQLException {
-        return 0;
-    }
-
-    @Override
-    public int update(Object o) throws SQLException {
-        return 0;
-    }
-
-    @Override
-    public int markInactive(int id) throws SQLException {
+    public int markInactive(int id) {
         return 0;
     }
 }
