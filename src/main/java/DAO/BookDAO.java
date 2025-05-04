@@ -114,8 +114,8 @@ public class BookDAO implements DAO<Book> {
             e.printStackTrace(); //can have more robust logging
         }
         finally {
-            try { ps.close(); } catch (Exception e) { /* Ignored */ }
-            try { connection.close(); } catch (Exception e) { /* Ignored */ }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
 
         return rs;
@@ -148,8 +148,8 @@ public class BookDAO implements DAO<Book> {
             e.printStackTrace();
         }
         finally {
-            try { ps.close(); } catch (Exception e) { /* Ignored */ }
-            try { connection.close(); } catch (Exception e) { /* Ignored */ }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
 
         return rs;
