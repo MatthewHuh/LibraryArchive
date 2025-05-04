@@ -4,28 +4,41 @@ import POJO.Book;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
 
-public class BookDAO implements DAO {
+public class BookDAO implements DAO<Book> {
+
     HikariDataSource ds = DBConnectionPool.getDataSource();
 
-
     @Override
-    public Object get(int id)  {
+    public Book get(int id)  {
+        //initialize variables
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
+        Book book = null;
+
         try{
+            //get connection
             connection = ds.getConnection();
+
+            //prepare statement
             String query = "SELECT * FROM books WHERE id = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, id);
+
+            //execute
             rs = ps.executeQuery();
 
+            //return results
             if(rs.next()){
-                Book book = new Book(rs.getInt("book_id"), rs.getInt("book_info_id"), rs.getInt("library_id"));
+                int book_id = rs.getInt("book_id");
+                int book_info_id = rs.getInt("book_info_id");
+                int library_id = rs.getInt("library_id");
+                book = new Book(book_id, book_info_id, library_id);
                 return book;
             }
         }
@@ -33,29 +46,113 @@ public class BookDAO implements DAO {
             e.printStackTrace(); //can have more robust logging
         }
         finally {
-            try { rs.close(); } catch (Exception e) { /* Ignored */ }
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return book;
+    }
+
+    @Override
+    public List<Book> getAll() {
+        //initialize variables
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<Book> books = new ArrayList<>();
+
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+            //prepare statement
+            String query = "SELECT * FROM books";
+            ps = connection.prepareStatement(query);
+            //execute query
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                int book_id = rs.getInt("book_id");
+                int book_info_id = rs.getInt("book_info_id");
+                int library_id = rs.getInt("library_id");
+                books.add(new Book(book_id, book_info_id, library_id));
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace(); //can have more robust logging
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return books;
+    }
+    //insert returns true on success
+    @Override
+    public int insert(Book book) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        int rs = 0;
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+
+            //prepare statement
+            String query = "INSERT INTO books (book_info_id, library_id) VALUES (?, ?)";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, book.getBookInfoID());
+            ps.setInt(2, book.getLibraryID());
+
+            //execute update
+            rs = ps.executeUpdate();
+            return rs;
+        }
+        catch (SQLException e){
+            e.printStackTrace(); //can have more robust logging
+        }
+        finally {
             try { ps.close(); } catch (Exception e) { /* Ignored */ }
             try { connection.close(); } catch (Exception e) { /* Ignored */ }
         }
-        return null;
+
+        return rs;
     }
 
     @Override
-    public List getAll() {
-        return List.of();
+    public int update(Book book) {
+        //initialize variables
+        Connection connection = null;
+        PreparedStatement ps = null;
+        int rs = 0;
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+
+            //prepare statement
+            String query = "UPDATE books SET book_info_id = ?, library_id = ? WHERE id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, book.getBookInfoID());
+            ps.setInt(2, book.getLibraryID());
+            ps.setInt(3, book.getBookID());
+
+            //execute update
+            rs = ps.executeUpdate();
+
+            return rs;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            try { ps.close(); } catch (Exception e) { /* Ignored */ }
+            try { connection.close(); } catch (Exception e) { /* Ignored */ }
+        }
+
+        return rs;
     }
 
-    @Override
-    public int insert(Object o) {
-        return 0;
-    }
-
-    @Override
-    public int update(Object o) {
-        return 0;
-    }
-
-    public int markInactive(int id) {
-        return 0;
-    }
 }
