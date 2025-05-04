@@ -26,7 +26,7 @@ public class BookDAO implements DAO<Book> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "SELECT * FROM books WHERE id = ?";
+            String query = "SELECT * FROM books WHERE book_id = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, id);
 
@@ -89,7 +89,7 @@ public class BookDAO implements DAO<Book> {
         }
         return books;
     }
-    //insert returns true on success
+    //insert returns number of rows changed
     @Override
     public int insert(Book book) {
         Connection connection = null;
@@ -133,7 +133,7 @@ public class BookDAO implements DAO<Book> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "UPDATE books SET book_info_id = ?, library_id = ? WHERE id = ?";
+            String query = "UPDATE books SET book_info_id = ?, library_id = ? WHERE book_id = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, book.getBookInfoID());
             ps.setInt(2, book.getLibraryID());

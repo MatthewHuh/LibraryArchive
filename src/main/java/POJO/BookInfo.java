@@ -1,16 +1,16 @@
 package POJO;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class BookInfo {
 	private int bookInfoID;
 	private String author;
 	private String genre;
 	private String title;
-	private LocalDate releaseDate;
+	private Date releaseDate;
 	
 	public BookInfo(int bookInfoID, String author, String genre, 
-			String title, LocalDate releaseDate) {
+			String title, Date releaseDate) {
 		this.bookInfoID = bookInfoID;
 		this.author = author;
 		this.genre = genre;
@@ -35,7 +35,7 @@ public class BookInfo {
 		return title;
 	}
 	
-	public LocalDate getReleaseDate() {
+	public Date getReleaseDate() {
 		return releaseDate;
 	}
 	
@@ -51,7 +51,7 @@ public class BookInfo {
 		this.genre = genre;
 	}
 	
-	public void setReleaseDate(LocalDate releaseDate) {
+	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 	

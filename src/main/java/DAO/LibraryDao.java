@@ -1,7 +1,7 @@
 package DAO;
 
-import POJO.Book;
-import POJO.Member;
+
+import POJO.Library;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
@@ -9,26 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
 
-
-public class MemberDAO implements DAO<Member> {
+public class LibraryDao implements DAO<Library> {
 
     HikariDataSource ds = DBConnectionPool.getDataSource();
 
     @Override
-    public Member get(int id) {
+    public Library get(int id)  {
         //initialize variables
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        Member member = null;
+        Library library = null;
 
         try{
             //get connection
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "SELECT * FROM members WHERE member_id = ?";
+            String query = "SELECT * FROM Libraries WHERE library_id = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, id);
 
@@ -37,71 +36,64 @@ public class MemberDAO implements DAO<Member> {
 
             //return results
             if(rs.next()){
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
-                String phone_number = rs.getString("phone_number");
-                String email = rs.getString("email");
-                String address = rs.getString("address");
-                String password = ""; // don't return password
-                member = new Member(id, first_name, last_name, phone_number, email, address, password);
-                return member;
+                int library_id = rs.getInt("library_id");
+                String Address = rs.getString("Address");
+                String Name = rs.getString("libraryName");
+                library = new Library(library_id, Address, Name);
+                return library;
             }
         }
-        catch (SQLException e){
-            e.printStackTrace();
+        catch(SQLException e){
+            e.printStackTrace(); //can have more robust logging
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
-        return member;
+        return library;
     }
 
     @Override
-    public List<Member> getAll() {
+    public List<Library> getAll() {
         //initialize variables
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        List<Member> members = new ArrayList<>();
+        List<Library> libraries = new ArrayList<>();
+
 
         try{
             //get connection
             connection = ds.getConnection();
             //prepare statement
-            String query = "SELECT * FROM members";
+            String query = "SELECT * FROM libraries";
             ps = connection.prepareStatement(query);
             //execute query
             rs = ps.executeQuery();
 
             while(rs.next()){
-                int member_id = rs.getInt("member_id");
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
-                String phone_number = rs.getString("phone_number");
-                String email = rs.getString("email");
-                String address = rs.getString("address");
-                String password = ""; // don't return password
-
-                members.add(new Member(member_id, first_name, last_name, phone_number, email, address, password));
+                int library_id = rs.getInt("library_id");
+                String Address = rs.getString("Address");
+                String Name = rs.getString("libraryName");
+                libraries.add(new Library(library_id, Address, Name));
             }
         }
         catch (SQLException e){
-            e.printStackTrace();
+            e.printStackTrace(); //can have more robust logging
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
-        return members;
+        return libraries;
     }
 
     //insert returns number of rows changed
     @Override
-    public int insert(Member member) {
+    public int insert(Library library) {
         Connection connection = null;
         PreparedStatement ps = null;
         int rs = 0;
@@ -109,33 +101,29 @@ public class MemberDAO implements DAO<Member> {
         try{
             //get connection
             connection = ds.getConnection();
-
             //prepare statement
-            String query = "insert into members (first_name, last_name, phone_number, email, address, hashed_password) values(?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Libraries (address, name) VALUES (?, ?)";
             ps = connection.prepareStatement(query);
-            ps.setString(1, member.getFirstName());
-            ps.setString(2, member.getLastName());
-            ps.setString(3, member.getPhoneNumber());
-            ps.setString(4, member.getEmail());
-            ps.setString(5, member.getAddress());
-            ps.setString(6, member.getHashedPassword());
+            ps.setString(1, library.getAddress());
+            ps.setString(2, library.getName());
 
             //execute update
             rs = ps.executeUpdate();
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace();
+            e.printStackTrace(); //can have more robust logging
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
+
         return rs;
     }
 
     @Override
-    public int update(Member member) {
+    public int update(Library library) {
         //initialize variables
         Connection connection = null;
         PreparedStatement ps = null;
@@ -146,15 +134,11 @@ public class MemberDAO implements DAO<Member> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "UPDATE books SET first_name = ?, last_name = ?, phone_number = ?, email = ?, address = ?, hashed_password WHERE member_id = ?";
+            String query = "UPDATE libraries SET address = ?, name = ? WHERE library_id = ?";
             ps = connection.prepareStatement(query);
-            ps.setString(1, member.getFirstName());
-            ps.setString(2, member.getLastName());
-            ps.setString(3, member.getPhoneNumber());
-            ps.setString(4, member.getEmail());
-            ps.setString(5, member.getAddress());
-            ps.setString(6, member.getHashedPassword());
-            ps.setInt(7, member.getMemberId());
+            ps.setString(1, library.getAddress());
+            ps.setString(2, library.getName());
+            ps.setInt(3, library.getLibraryID());
 
             //execute update
             rs = ps.executeUpdate();
@@ -171,4 +155,5 @@ public class MemberDAO implements DAO<Member> {
 
         return rs;
     }
+
 }

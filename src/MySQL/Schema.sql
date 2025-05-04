@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS members (
 CREATE TABLE IF NOT EXISTS libraries (
     library_id INTEGER NOT NULL AUTO_INCREMENT,
     address VARCHAR(250) NOT NULL,
-    libraryName VARCHAR(250) NOT NULL,
+    name VARCHAR(250) NOT NULL,
     PRIMARY KEY (library_id)
     );
 
