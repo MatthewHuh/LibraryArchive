@@ -10,35 +10,96 @@
     <top>
         <VBox alignment="TOP_CENTER" BorderPane.alignment="TOP_CENTER">
             <Label contentDisplay="BOTTOM" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Book Search" />
-            <HBox alignment="CENTER" spacing="10" HBox.hgrow="ALWAYS">
-                <TextField fx:id="searchField" promptText="Search by title, author or ISBN" style="-fx-background-radius: 5; -fx-border-radius: 5;" HBox.hgrow="ALWAYS" />
-                <Button fx:id="searchButton" onAction="#onSearchAction" style="-fx-background-radius: 5; -fx-font-size: 14px;" text="Search" />
-            </HBox>
         </VBox>
     </top>
 
     <!-- Results Table -->
     <center>
-        <TableView fx:id="bookTable" prefHeight="400" prefWidth="800" style="-fx-background-radius: 5;">
-            <columns>
-                <TableColumn fx:id="titleColumn" prefWidth="300" text="Title" />
-                <TableColumn fx:id="authorColumn" prefWidth="200" text="Author" />
-                <TableColumn fx:id="yearColumn" prefWidth="100" text="Year" />
-                <TableColumn fx:id="availabilityColumn" prefWidth="75" text="Available" />
-                <TableColumn fx:id="actionColumn" prefWidth="100" text="Action" />
-            </columns>
-        </TableView>
+        <VBox spacing="15">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <!-- Basic Search -->
+            <HBox fx:id="basicSearchBar" alignment="CENTER_LEFT" spacing="10">
+                <TextField fx:id="basicSearchField" promptText="Search by title, author, or ISBN" HBox.hgrow="ALWAYS" />
+                <Button fx:id="basicSearchButton" onAction="#onBasicSearch" text="Search" />
+            </HBox>
+
+            <!-- Advanced Search -->
+            <TitledPane collapsible="true" expanded="false" text="Advanced Search">
+                <content>
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" />
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+
+                        <!-- Title / Author / ISBN fields -->
+                        <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="titleField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Author:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="authorField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="ISBN:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="isbnField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <!-- Other advanced filters -->
+                        <Label text="Genre:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <ChoiceBox fx:id="genreBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <Label text="Year From:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="yearFromField" promptText="e.g. 2000" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <Label text="Year To:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="yearToField" promptText="e.g. 2024" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                        <CheckBox fx:id="availableOnlyCheck" text="Only show available" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                        <HBox alignment="CENTER_RIGHT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                            <Button onAction="#onClearAdvanced" text="Clear" />
+                            <Button onAction="#onApplyAdvanced" text="Apply" />
+                        </HBox>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                    </GridPane>
+                </content>
+            </TitledPane>
+
+            <!-- Results Table -->
+            <TableView fx:id="resultsTable" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="colTitle" prefWidth="200" text="Title" />
+                    <TableColumn fx:id="colAuthor" prefWidth="150" text="Author" />
+                    <TableColumn fx:id="colISBN" prefWidth="120" text="ISBN" />
+                    <TableColumn fx:id="colGenre" prefWidth="100" text="Genre" />
+                    <TableColumn fx:id="colYear" prefWidth="60" text="Year" />
+                    <TableColumn fx:id="colAvailable" prefWidth="80" text="Available" />
+                </columns>
+            </TableView>
+        </VBox>
     </center>
 
-    <!-- Status Bar -->
     <bottom>
-        <HBox>
-            <Label style="-fx-font-weight: bold;" text="Status:" />
-            <TextField fx:id="statusField" editable="false" style="-fx-background-radius: 3; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+        <HBox alignment="CENTER_LEFT" spacing="5">
+            <Label text="Status:" />
+            <TextField fx:id="statusField" editable="false" HBox.hgrow="ALWAYS" />
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </BorderPane.margin>
         </HBox>
     </bottom>
    <padding>
-      <Insets left="20.0" right="20.0" />
+      <Insets top="20.0" />
    </padding>
 
 </BorderPane>

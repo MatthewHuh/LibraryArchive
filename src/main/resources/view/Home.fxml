@@ -10,9 +10,9 @@
         <HBox fx:id="navBar" alignment="CENTER_LEFT" prefHeight="50" spacing="20" styleClass="nav-bar">
             <Label fx:id="logoLabel" styleClass="nav-logo" text="📚 MyLibrary" />
             <Hyperlink fx:id="homeLink" onAction="#handleHome" styleClass="nav-link" text="Home" />
-            <Hyperlink fx:id="browseLink" styleClass="nav-link" text="Browse" />
-            <Hyperlink fx:id="accountLink" styleClass="nav-link" text="My Account" />
-            <Hyperlink fx:id="borrowedLink" styleClass="nav-link" text="Borrowed" />
+            <Hyperlink fx:id="browseLink" onAction="#handleBrowse" styleClass="nav-link" text="Browse" />
+            <Hyperlink fx:id="accountLink" onAction="#handleAccount" styleClass="nav-link" text="My Account" />
+            <Hyperlink fx:id="borrowedLink" onAction="#handleBorrowed" styleClass="nav-link" text="Borrowed" />
             <Region HBox.hgrow="ALWAYS" />
             <Button fx:id="logoutButton" onAction="#handleLogout" text="Logout" />
         </HBox>

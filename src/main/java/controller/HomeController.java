@@ -42,10 +42,10 @@ public class HomeController {
     @FXML
     private HBox navBar;
 
-    private void loadHomeContent() {
-        URL url = getClass().getResource("/view/HomeContent.fxml");
+    private void loadContent(String urlStr) {
+        URL url = getClass().getResource(urlStr);
         try{
-            ScrollPane scrollPane = (ScrollPane) FXMLLoader.load(url);
+            Node scrollPane = FXMLLoader.load(url);
 
             mainPane.setCenter(scrollPane);
         }
@@ -55,7 +55,7 @@ public class HomeController {
     }
 
     public void initialize() {
-        loadHomeContent();
+        loadContent("/view/HomeContent.fxml");
     }
 
     public void handleLogout(ActionEvent actionEvent) {
@@ -79,6 +79,18 @@ public class HomeController {
     }
 
     public void handleHome(ActionEvent actionEvent) {
-        loadHomeContent();
+        loadContent("/view/HomeContent.fxml");
+    }
+
+    public void handleAccount(ActionEvent actionEvent) {
+        loadContent("/view/Profile.fxml");
+    }
+
+    public void handleBrowse(ActionEvent actionEvent) {
+        loadContent("/view/Search.fxml");
+    }
+
+    public void handleBorrowed(ActionEvent actionEvent) {
+        loadContent("/view/Borrowed.fxml");
     }
 }
