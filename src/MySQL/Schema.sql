@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS borrow_record (
     member_id INTEGER NOT NULL,
     book_id INTEGER NOT NULL,
     late_fee INTEGER NOT NULL,
-    return_date DATE,
+    return_date DATE NOT NULL,
+    is_returned BOOLEAN NOT NULL,
     PRIMARY KEY (borrow_record_id),
     FOREIGN KEY (member_id) REFERENCES members(member_id),
     FOREIGN KEY (book_id) REFERENCES books(book_id)
