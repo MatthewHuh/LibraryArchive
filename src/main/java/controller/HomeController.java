@@ -1,16 +1,63 @@
 package controller;
 
+import POJO.CommonObjs;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+import javafx.scene.layout.FlowPane;
 import java.io.IOException;
+import java.net.URL;
 
 public class HomeController {
+    @FXML
+    public BorderPane mainPane;
+
+    @FXML
+    private Hyperlink accountLink;
+
+    @FXML
+    private Hyperlink borrowedLink;
+
+    @FXML
+    private Hyperlink browseLink;
+
+    @FXML
+    private Hyperlink homeLink;
+
+
+    @FXML
+    private Label logoLabel;
+
+    @FXML
+    private Button logoutButton;
+
+    @FXML
+    private HBox navBar;
+
+    private void loadHomeContent() {
+        URL url = getClass().getResource("/view/HomeContent.fxml");
+        try{
+            ScrollPane scrollPane = (ScrollPane) FXMLLoader.load(url);
+
+            mainPane.setCenter(scrollPane);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void initialize() {
+        loadHomeContent();
+    }
+
     public void handleLogout(ActionEvent actionEvent) {
         try {
             Parent home = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
@@ -29,5 +76,9 @@ public class HomeController {
             alert.setContentText("Please try again or contact support.");
             alert.showAndWait();
         }
+    }
+
+    public void handleHome(ActionEvent actionEvent) {
+        loadHomeContent();
     }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import POJO.CommonObjs;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -16,11 +18,15 @@ public class LoginController {
 
     public void handleLogin(ActionEvent actionEvent) {
         try {
-            Parent home = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
+            BorderPane home = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
             Stage  st   = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             st.setScene(new Scene(home));
             st.sizeToScene();
             st.centerOnScreen();
+
+            CommonObjs commonObjs = CommonObjs.getInstance();
+            commonObjs.setBorderPane(home);
+
         } catch (IOException e) {
             // 1) Log the error
             e.printStackTrace();
