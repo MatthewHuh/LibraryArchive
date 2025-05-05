@@ -1,10 +1,12 @@
 import DAO.DBConnectionPool;
 import com.zaxxer.hikari.HikariDataSource;
+import POJO.CommonObjs;
 import javafx.application.Application;
+import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXMLLoader;
 
 import java.sql.Connection;
@@ -15,11 +17,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			VBox root = (VBox)FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
-			Scene scene = new Scene(root,1024,768);
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
+			Parent root = loader.load();
+			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("Library Login");
 			primaryStage.show();
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

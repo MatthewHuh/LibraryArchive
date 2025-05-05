@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="550" prefWidth="550" styleClass="root-pane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SignUpController" stylesheets="@../css/application.css">
+    <children>
+        <VBox fx:id="signupBox" alignment="CENTER" layoutX="110.0" layoutY="33.0" spacing="8" styleClass="form-box" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="110">
+            <Label styleClass="form-title" stylesheets="@../css/application.css" text="Create Account" />
+            <VBox spacing="1">
+                <HBox spacing="8">
+                    <TextField fx:id="firstNameField" promptText="First Name" HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="lastNameField"  promptText="Last Name"  HBox.hgrow="ALWAYS"/>
+                </HBox>
+                <Label fx:id="nameError" styleClass="error-label" text="" />
+            </VBox>
+            <VBox spacing="1">
+                <TextField fx:id="emailField" promptText="Email" />
+                <Label fx:id="emailError" styleClass="error-label" text="" />
+            </VBox>
+            <VBox spacing="1">
+                <TextField fx:id="addressField" promptText="Street Address" />
+                <Label fx:id="addressError" styleClass="error-label" text="" />
+            </VBox>
+            <VBox spacing="1">
+                <GridPane hgap="8">
+                    <columnConstraints>
+                        <!-- City column: fill all remaining space -->
+                        <ColumnConstraints hgrow="ALWAYS" />
+                        <!-- State column: fixed at 70px -->
+                        <ColumnConstraints minWidth="50" prefWidth="50" maxWidth="50" />
+                        <!-- ZIP column: fixed at 90px -->
+                        <ColumnConstraints minWidth="70" prefWidth="70" maxWidth="70" />
+                    </columnConstraints>
+
+                    <TextField fx:id="cityField"
+                               promptText="City"
+                               GridPane.columnIndex="0" />
+
+                    <TextField fx:id="stateField"
+                               promptText="State"
+                               GridPane.columnIndex="1" />
+
+                    <TextField fx:id="zipField"
+                               promptText="ZIP Code"
+                               GridPane.columnIndex="2" />
+                </GridPane>
+                <Label fx:id="cityStateZipError" styleClass="error-label" text="" />
+            </VBox>
+            <!-- Password -->
+            <VBox spacing="1">
+                <PasswordField fx:id="passwordField" promptText="Password" />
+                <Label fx:id="passwordError" styleClass="error-label" text="" />
+            </VBox>
+
+            <!-- Confirm Password -->
+            <VBox spacing="1">
+                <PasswordField fx:id="confirmField" promptText="Confirm Password" />
+                <Label fx:id="confirmError" styleClass="error-label" text="" />
+            </VBox>
+            <Button fx:id="signupButton" maxWidth="Infinity" text="Sign Up" onAction="#handleSignup"/>
+            <Hyperlink fx:id="goToLoginLink" text="Already have an account? Log in" onAction="#handleGoToLogin"/>
+        </VBox>
+    </children>
+</AnchorPane>
