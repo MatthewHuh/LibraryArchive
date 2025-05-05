@@ -1,1 +1,113 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/* ─── FORM PAGES ONLY ───────────────────────────────────────────────────────── */
+
+.form-box .text-field,
+.form-box .password-field {
+    -fx-pref-width: 250px;
+}
+
+.form-box .button {
+    /* ideally give an actual px width, or let the container size it */
+    -fx-pref-width: 200px;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.form-box .hyperlink {
+    -fx-font-size: 11px;
+    -fx-text-fill: #555;
+}
+
+.form-box {
+    -fx-background-color: white;
+    -fx-padding: 20 25 20 25;
+    -fx-spacing: 10;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 2);
+}
+
+.form-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.error-label {
+    -fx-text-fill: #b00020;      /* typical “error” red */
+    -fx-font-size: 11px;
+    -fx-min-height: 16px;        /* reserve vertical space even when text="" */
+}
+
+/* ─── GLOBAL / HOME PAGE RULES ───────────────────────────────────────────────── */
+
+/* background behind everything */
+.root-pane {
+    -fx-background-color: #eef2f5;
+}
+
+/* navigation bar */
+.nav-bar {
+    -fx-background-color: white;
+    -fx-padding: 0 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.nav-logo {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Only style hyperlinks in the nav bar */
+.nav-bar .hyperlink {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555;
+    -fx-cursor: hand;
+}
+.nav-bar .hyperlink:hover {
+    -fx-text-fill: #000;
+}
+
+/* logout button inside nav */
+.nav-bar .button {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-background-radius: 4;
+}
+.nav-bar .button:hover {
+    -fx-background-color: rgba(0,0,0,0.05);
+}
+
+/* section titles on home page */
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #444;
+    -fx-padding: 8 0 4 0;
+}
+
+/* search bar on home page */
+#searchBar .text-field {
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
+    -fx-background-radius: 4;
+}
+#searchBar .button {
+    -fx-font-size: 14px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 4;
+}
+
+/* image thumbnails */
+.image-view {
+    -fx-fit-width: 100px;
+    -fx-fit-height: 150px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+}
+
+/* quick-links buttons at bottom */
+#quickLinks .button {
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 4;
+}

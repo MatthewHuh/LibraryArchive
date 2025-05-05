@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="350" prefWidth="550" styleClass="root-pane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController" stylesheets="@../css/application.css">
+    <children>
+        <VBox fx:id="loginBox" alignment="CENTER" layoutX="112.0" layoutY="47.0" spacing="15" styleClass="form-box" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0">
+            <Label styleClass="form-title" stylesheets="@../css/application.css" text="📚 Library Login" />
+            <VBox spacing="1">
+                <TextField fx:id="emailField"
+                           promptText="Email"
+                           maxWidth="Infinity"/>
+                <Label fx:id="emailError"
+                       styleClass="error-label"
+                       text=""/>
+            </VBox>
+            <VBox spacing="1">
+                <PasswordField fx:id="passwordField"
+                               promptText="Password"
+                               maxWidth="Infinity"/>
+                <Label fx:id="passwordError"
+                       styleClass="error-label"
+                       text=""/>
+            </VBox>
+            <Button fx:id="loginButton" maxWidth="Infinity" text="Log In" onAction="#handleLogin" />
+            <Hyperlink fx:id="goToSignupLink" text="Don’t have an account? Sign up" onAction="#handleGoToSignup" />
+        </VBox>
+    </children>
+</AnchorPane>

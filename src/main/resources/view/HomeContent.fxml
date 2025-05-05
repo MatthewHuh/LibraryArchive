@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.HomeContentController"
+            prefHeight="550.0" prefWidth="800.0" fitToHeight="true" fitToWidth="true">
+    <VBox fx:id="mainContainer" spacing="20">
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20" />
+        </padding>
+
+        <!-- Search bar -->
+        <HBox fx:id="searchBar" alignment="CENTER" spacing="10">
+            <TextField fx:id="searchField" promptText="Search by title, author, ISBN" HBox.hgrow="ALWAYS" />
+            <Button fx:id="searchButton" onAction="#handelSearch" text="Search" />
+        </HBox>
+
+        <!-- New Arrivals -->
+        <Label fx:id="newArrivalsLabel" styleClass="section-title" text="New Arrivals" />
+        <FlowPane fx:id="newArrivalsPane" hgap="10" prefWrapLength="760" vgap="10" />
+
+        <!-- Recommendations -->
+        <Label fx:id="recommendLabel" styleClass="section-title" text="Recommended for You" />
+        <FlowPane fx:id="recommendPane" hgap="10" prefWrapLength="760" vgap="10" />
+
+        <!-- Quick Links -->
+        <HBox fx:id="quickLinks" alignment="CENTER" spacing="15">
+            <Button fx:id="categoriesButton" text="View All Categories" />
+            <Button fx:id="loansButton" text="My Loans" />
+            <Button fx:id="settingsButton" text="Account Settings" />
+        </HBox>
+
+    </VBox>
+</ScrollPane>
