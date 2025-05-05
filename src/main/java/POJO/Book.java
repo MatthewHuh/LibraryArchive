@@ -1,16 +1,16 @@
 package POJO;
 
 public class Book {
-	private int bookID;
+	private Integer bookID;
 	private int bookInfoID;
 	private int libraryID;
-	
+
 	public Book(int bookID, int bookInfoID, int libraryID) {
 		this.bookID = bookID;
 		this.bookInfoID = bookInfoID;
 		this.libraryID = libraryID;
 	}
-	
+
 	public int getBookID() {
 		return bookID;
 	}

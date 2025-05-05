@@ -1,60 +1,77 @@
 package POJO;
 
-import java.time.LocalDate;
-
 public class Member {
-	private int borrowRecordID;
-	private int memberID;
-	private int bookID;
-	private int lateFee;
-	private LocalDate returnDate;
-	
-	public Member(int borrowRecordID, int memberID, int bookID, 
-			int lateFee, LocalDate returnDate) {
-		this.borrowRecordID = borrowRecordID;
-		this.memberID = memberID;
-		this.bookID = bookID;
-		this.lateFee = lateFee;
-		this.returnDate = returnDate;
-	}
-	
-	public int getBookID() {
-		return bookID;
-	}
-	
-	public int getBorrowRecordID() {
-		return borrowRecordID;
-	}
-	
-	public int getLateFee() {
-		return lateFee;
-	}
-	
-	public int getMemberID() {
-		return memberID;
-	}
-	
-	public LocalDate getReturnDate() {
-		return returnDate;
-	}
-	
-	public void setBookID(int bookID) {
-		this.bookID = bookID;
-	}
-	
-	public void setBorrowRecordID(int borrowRecordID) {
-		this.borrowRecordID = borrowRecordID;
-	}
-	
-	public void setLateFee(int lateFee) {
-		this.lateFee = lateFee;
-	}
-	
-	public void setMemberID(int memberID) {
-		this.memberID = memberID;
-	}
-	
-	public void setReturnDate(LocalDate returnDate) {
-		this.returnDate = returnDate;
-	}
+    private int memberId;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String email;
+    private String address;
+    private String hashedPassword;
+
+    public Member(int memberId, String firstName, String lastName, String phoneNumber, String email, String address, String hashedPassword) {
+        this.memberId = memberId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.hashedPassword = hashedPassword;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
 }
