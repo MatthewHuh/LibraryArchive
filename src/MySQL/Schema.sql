@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS members (
     member_id INTEGER NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    phone_number CHAR(12) NOT NULL,
-    email VARCHAR(62) NOT NULL,
+    phone_number CHAR(10) NOT NULL,
+    email VARCHAR(62) NOT NULL UNIQUE,
     address VARCHAR(130) NOT NULL,
     hashed_password VARCHAR(255) NOT NULL,
     PRIMARY KEY (member_id)

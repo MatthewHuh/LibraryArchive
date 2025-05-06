@@ -1,6 +1,7 @@
 package controller;
 
-import POJO.CommonObjs;
+import POJO.Member;
+import POJO.Singleton.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.layout.FlowPane;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -42,24 +42,13 @@ public class HomeController {
     @FXML
     private HBox navBar;
 
-    private void loadContent(String urlStr) {
-        URL url = getClass().getResource(urlStr);
-        try{
-            Node scrollPane = FXMLLoader.load(url);
-
-            mainPane.setCenter(scrollPane);
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
     public void initialize() {
         loadContent("/view/HomeContent.fxml");
     }
 
     public void handleLogout(ActionEvent actionEvent) {
         try {
+            Session.get().setMember(null);
             Parent home = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
             Stage st   = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             st.setScene(new Scene(home));
@@ -75,6 +64,18 @@ public class HomeController {
             alert.setHeaderText("Could not load Login Page");
             alert.setContentText("Please try again or contact support.");
             alert.showAndWait();
+        }
+    }
+
+    private void loadContent(String urlStr) {
+        URL url = getClass().getResource(urlStr);
+        try{
+            Node scrollPane = FXMLLoader.load(url);
+
+            mainPane.setCenter(scrollPane);
+        }
+        catch(IOException e){
+            e.printStackTrace();
         }
     }
 

@@ -1,4 +1,4 @@
-package POJO;
+package POJO.Singleton;
 
 import javafx.scene.layout.BorderPane;
 
