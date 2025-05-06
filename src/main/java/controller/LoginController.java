@@ -1,43 +1,81 @@
 package controller;
 
-import POJO.CommonObjs;
+import DAO.MemberDAO;
+import POJO.Singleton.CommonObjs;
+import POJO.Member;
+import POJO.Singleton.Session;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
-
 public class LoginController {
 
+    public PasswordField passwordField;
+    public TextField emailField;
+    public Label passwordError;
+    public Label emailError;
+
+    private boolean isInput() {
+        boolean flag = true;
+        if (emailField.getText().isEmpty()) {
+            emailError.setText("Please enter your email");
+            emailError.setVisible(true);
+            flag = false;
+        } else {emailError.setVisible(false);}
+        if (passwordField.getText().isEmpty()) {
+            passwordError.setText("Please enter your password");
+            passwordError.setVisible(true);
+            flag = false;
+        }  else {passwordError.setVisible(false);}
+        return flag;
+    }
+
     public void handleLogin(ActionEvent actionEvent) {
-        try {
-            BorderPane home = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
-            Stage  st   = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            st.setScene(new Scene(home));
-            st.sizeToScene();
-            st.centerOnScreen();
+        if(isInput()) {
+            String email = emailField.getText();
+            String password = passwordField.getText();
 
-            CommonObjs commonObjs = CommonObjs.getInstance();
-            commonObjs.setBorderPane(home);
+            MemberDAO memberDAO = new MemberDAO();
+            Member member = memberDAO.login(email, password);
+            if (member != null) {
+                try {
+                    Session.get().setMember(member);
+                    BorderPane home = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
+                    Stage  st   = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                    st.setScene(new Scene(home));
+                    st.sizeToScene();
+                    st.centerOnScreen();
 
-        } catch (IOException e) {
-            // 1) Log the error
-            e.printStackTrace();
+                    CommonObjs commonObjs = CommonObjs.getInstance();
+                    commonObjs.setBorderPane(home);
 
-            // 2) Inform the user
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Navigation Error");
-            alert.setHeaderText("Could not load Home Page");
-            alert.setContentText("Please try again or contact support.");
-            alert.showAndWait();
+                } catch (IOException e) {
+                    // 1) Log the error
+                    e.printStackTrace();
+
+                    // 2) Inform the user
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Navigation Error");
+                    alert.setHeaderText("Could not load Home Page");
+                    alert.setContentText("Please try again or contact support.");
+                    alert.showAndWait();
+                }
+            }
+            else {
+                passwordError.setText("Email or password is incorrect");
+                passwordError.setVisible(true);
+            }
         }
+
     }
 
     public void handleGoToSignup(ActionEvent actionEvent) {

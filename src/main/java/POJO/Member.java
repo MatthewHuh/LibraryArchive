@@ -1,7 +1,7 @@
 package POJO;
 
 public class Member {
-    private int memberId;
+    private Integer memberId;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -9,7 +9,7 @@ public class Member {
     private String address;
     private String hashedPassword;
 
-    public Member(int memberId, String firstName, String lastName, String phoneNumber, String email, String address, String hashedPassword) {
+    public Member(Integer memberId, String firstName, String lastName, String phoneNumber, String email, String address, String hashedPassword) {
         this.memberId = memberId;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -23,6 +23,10 @@
                 <Label fx:id="addressError" styleClass="error-label" text="" />
             </VBox>
             <VBox spacing="1">
+                <TextField fx:id="phoneField" promptText="Phone Number" />
+                <Label fx:id="phoneError" styleClass="error-label" text="" />
+            </VBox>
+            <VBox spacing="1">
                 <GridPane hgap="8">
                     <columnConstraints>
                         <!-- City column: fill all remaining space -->

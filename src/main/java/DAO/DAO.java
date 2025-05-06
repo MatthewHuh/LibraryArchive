@@ -7,7 +7,7 @@ public interface DAO <T>{
 
     List<T>  getAll();
 
-    int insert(T t);
+    int insert(T t) throws SQLException;
 
     int update(T t);
 }

@@ -14,6 +14,46 @@ public class MemberDAO implements DAO<Member> {
 
     HikariDataSource ds = DBConnectionPool.getDataSource();
 
+    public Member login(String inputEmail, String inputPassword) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+            // hash input password before executing query
+            //prepare statement
+            String query = "SELECT * FROM members WHERE email = ? AND hashed_password = ?;";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, inputEmail);
+            ps.setString(2, inputPassword);
+            //execute query
+            rs = ps.executeQuery();
+
+            if(rs.next()){
+                Integer id = rs.getInt("member_id");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone_number = rs.getString("phone_number");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String password = ""; // don't return password
+                Member member = new Member(id,first_name, last_name, phone_number, email, address, password);
+                return member;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return null;
+    }
+
     @Override
     public Member get(int id) {
         //initialize variables
@@ -146,15 +186,14 @@ public class MemberDAO implements DAO<Member> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "UPDATE books SET first_name = ?, last_name = ?, phone_number = ?, email = ?, address = ?, hashed_password WHERE member_id = ?";
+            String query = "UPDATE members SET first_name = ?, last_name = ?, phone_number = ?, email = ?, address = ? WHERE member_id = ?";
             ps = connection.prepareStatement(query);
             ps.setString(1, member.getFirstName());
             ps.setString(2, member.getLastName());
             ps.setString(3, member.getPhoneNumber());
             ps.setString(4, member.getEmail());
             ps.setString(5, member.getAddress());
-            ps.setString(6, member.getHashedPassword());
-            ps.setInt(7, member.getMemberId());
+            ps.setInt(6, member.getMemberId());
 
             //execute update
             rs = ps.executeUpdate();
