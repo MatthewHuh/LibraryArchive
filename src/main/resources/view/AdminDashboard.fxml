@@ -36,11 +36,7 @@
                         <TextField fx:id="newGenreField"     GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
                         <Label text="Year:"        GridPane.rowIndex="4" GridPane.columnIndex="0" />
-                        <TextField fx:id="newYearField"      GridPane.rowIndex="4" GridPane.columnIndex="1" />
-
-                        <Label text="Description:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
-                        <TextArea fx:id="newDescArea" wrapText="true" prefRowCount="3"
-                                  GridPane.rowIndex="5" GridPane.columnIndex="1" />
+                        <DatePicker fx:id="newDateField"      GridPane.rowIndex="4" GridPane.columnIndex="1" />
                     </GridPane>
 
                     <HBox alignment="CENTER_RIGHT" spacing="10">

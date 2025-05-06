@@ -3,12 +3,12 @@ CREATE DATABASE IF NOT EXISTS LibraryArchive;
 USE LibraryArchive;
 
 CREATE TABLE IF NOT EXISTS book_info (
-    book_info_id INTEGER NOT NULL AUTO_INCREMENT,
+    isbn CHAR(13) NOT NULL,
     author VARCHAR(255) NOT NULL,
     genre VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     release_date DATE NOT NULL,
-    PRIMARY KEY (book_info_id)
+    PRIMARY KEY (isbn)
     );
 
 CREATE TABLE IF NOT EXISTS members (
@@ -33,10 +33,10 @@ CREATE TABLE IF NOT EXISTS libraries (
 
 CREATE TABLE IF NOT EXISTS books (
     book_id INTEGER NOT NULL AUTO_INCREMENT,
-    book_info_id INTEGER NOT NULL,
+    isbn CHAR(13) NOT NULL,
     library_id INTEGER NOT NULL,
     PRIMARY KEY (book_id),
-    FOREIGN KEY (book_info_id) REFERENCES book_info(book_info_id),
+    FOREIGN KEY (isbn) REFERENCES book_info(isbn),
     FOREIGN KEY (library_id) REFERENCES libraries(library_id)
     );
 
