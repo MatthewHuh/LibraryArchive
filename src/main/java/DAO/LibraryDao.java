@@ -76,7 +76,7 @@ public class LibraryDao implements DAO<Library> {
             while(rs.next()){
                 int library_id = rs.getInt("library_id");
                 String Address = rs.getString("Address");
-                String Name = rs.getString("libraryName");
+                String Name = rs.getString("name");
                 libraries.add(new Library(library_id, Address, Name));
             }
         }

@@ -1,15 +1,17 @@
 package controller;
 
 import DAO.BookInfoDao;
+import POJO.Book;
 import POJO.BookInfo;
+import POJO.Library;
+import POJO.Singleton.GlobalDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.function.UnaryOperator;
 
 public class AdminDashboardController {
 
@@ -17,51 +19,216 @@ public class AdminDashboardController {
     private Button addToLibraryButton;
 
     @FXML
-    private ComboBox<?> bookComboBox;
+    private Label isbnError;
 
     @FXML
-    private TextField copyCountField;
+    private Label bookInfoStatusField;
+
+    @FXML
+    private Label bookInfoStatusLable;
+
+    @FXML
+    private Label bookStatusField;
+
+    @FXML
+    private Label bookStatusLable;
+
+    @FXML
+    private TextField isbnField;
 
     @FXML
     private Button declareButton;
 
     @FXML
-    private ComboBox<?> libraryComboBox;
+    private ComboBox<Library> libraryComboBox;
+
+    @FXML
+    private Label libraryError;
+
+    @FXML
+    private Label newAuthorError;
 
     @FXML
     private TextField newAuthorField;
 
     @FXML
+    private Label newDateError;
+
+    @FXML
+    private DatePicker newDateField;
+
+    @FXML
+    private Label newGenreError;
+
+    @FXML
     private TextField newGenreField;
+
+    @FXML
+    private Label newIsbnError;
 
     @FXML
     private TextField newIsbnField;
 
     @FXML
+    private Label newTitleError;
+
+    @FXML
     private TextField newTitleField;
 
     @FXML
-    private DatePicker newDateField;
+    public void initialize() {
+        UnaryOperator<TextFormatter.Change> authorFilter = change -> {
+            String newText = change.getControlNewText();
+            return newText.matches("[a-zA-Z ,]{0,255}") ? change : null;
+        };
+        newAuthorField.setTextFormatter(new TextFormatter<>(authorFilter));
 
+        UnaryOperator<TextFormatter.Change> titleFilter = change -> {
+            String newText = change.getControlNewText();
+            return newText.matches("[a-zA-Z ,]{0,255}") ? change : null;
+        };
+        newTitleField.setTextFormatter(new TextFormatter<>(titleFilter));
 
+        UnaryOperator<TextFormatter.Change> isbnFilter = change -> {
+            String newText = change.getControlNewText();
+            return newText.matches("\\d{0,13}") ? change : null;
+        };
+        newIsbnField.setTextFormatter(new TextFormatter<>(isbnFilter));
+        isbnField.setTextFormatter(new TextFormatter<>(isbnFilter));
 
-    public void handleDeclareBook(ActionEvent actionEvent) {
-        BookInfo bookInfo  = getBookInfo();
-        BookInfoDao bookInfoDAO = new BookInfoDao();
-        bookInfoDAO.insert(bookInfo);
+        UnaryOperator<TextFormatter.Change> genreFilter = change -> {
+            String newText = change.getControlNewText();
+            return newText.matches("[a-zA-Z]{0,50}") ? change : null;
+        };
+        newGenreField.setTextFormatter(new TextFormatter<>(genreFilter));
+
+        List<Library> libraries = GlobalDAO.getInstance().getLibraryDao().getAll();
+        for (Library library : libraries) {
+            libraryComboBox.getItems().add(library);
+        }
     }
 
+    private boolean isInputBookInfo() {
+        boolean flag = true;
+        if(newAuthorField.getText().trim().isEmpty()) {
+            newAuthorError.setText("Please enter the author name(s)");
+            newAuthorError.setVisible(true);
+            flag = false;
+        } else {newAuthorError.setVisible(false);}
+        if(newGenreField.getText().trim().isEmpty()) {
+            newGenreError.setText("Please enter the genre");
+            newGenreError.setVisible(true);
+            flag = false;
+        } else {newGenreError.setVisible(false);}
+        if(newIsbnField.getText().trim().isEmpty()) {
+            newIsbnError.setText("Please enter the ISBN");
+            newIsbnError.setVisible(true);
+            flag = false;
+        } else {newIsbnError.setVisible(false);}
+        if(newTitleField.getText().trim().isEmpty()) {
+            newTitleError.setText("Please enter the title");
+            newTitleError.setVisible(true);
+            flag = false;
+        }  else {newTitleError.setVisible(false);}
+        if(newDateField.getValue() == null) {
+            newDateError.setText("Please enter the date");
+            newDateError.setVisible(true);
+            flag = false;
+        }  else {newDateError.setVisible(false);}
+        return flag;
+    }
 
+    private boolean isValidBookInfo() {
+        if(newIsbnField.getText().trim().length() != 13) {
+            newIsbnError.setText("Please enter a valid ISBN");
+            newIsbnError.setVisible(true);
+            return false;
+        }
+        if(GlobalDAO.getInstance().getBookInfoDAO().get(newIsbnField.getText()) != null) {
+            newIsbnError.setText("ISBN taken, book already exists");
+            newIsbnError.setVisible(true);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isInputBook() {
+        boolean flag = true;
+        if(isbnField.getText().trim().isEmpty()) {
+            isbnError.setText("Please enter an ISBN number");
+            isbnError.setVisible(true);
+            flag = false;
+        } else {isbnError.setVisible(false);}
+        if(libraryComboBox.getValue() == null) {
+            libraryError.setText("Please enter the library name");
+            libraryError.setVisible(true);
+            flag = false;
+        } else {libraryError.setVisible(false);}
+        return flag;
+    }
+
+    private boolean isValidBook() {
+        if(isbnField.getText().trim().length() != 13) {
+            isbnError.setText("Please enter a valid ISBN");
+            isbnError.setVisible(true);
+            return false;
+        }
+        if(GlobalDAO.getInstance().getBookInfoDAO().get(isbnField.getText()) == null) {
+            isbnError.setText("Book Not Found");
+            isbnError.setVisible(true);
+            return false;
+        }
+        return true;
+    }
+
+    public void handleDeclareBook(ActionEvent actionEvent) {
+        bookInfoStatusField.setVisible(false);
+        if(isInputBookInfo() && isValidBookInfo()) {
+            BookInfo bookInfo = getBookInfo();
+            if(GlobalDAO.getInstance().getBookInfoDAO().insert(bookInfo) == 1) {
+                bookInfoStatusField.setText("Book Info inserted successfully");
+                bookInfoStatusField.setVisible(true);
+                newAuthorField.clear();
+                newGenreField.clear();
+                newIsbnField.clear();
+                newTitleField.clear();
+                newDateField.setValue(null);
+            } else {
+                bookInfoStatusField.setText("Book Info insert failed");
+                bookInfoStatusField.setVisible(true);
+            }
+        }
+    }
 
     private BookInfo getBookInfo() {
-        String author = newAuthorField.getText();
-        String genre = newGenreField.getText();
-        String isbn = newIsbnField.getText();
-        String title = newTitleField.getText();
+        String author = newAuthorField.getText().trim();
+        String genre = newGenreField.getText().trim();
+        String isbn = newIsbnField.getText().trim();
+        String title = newTitleField.getText().trim();
         LocalDate year = newDateField.getValue();
         return new BookInfo(isbn, author, genre, title, year);
     }
 
     public void handleAddToLibrary(ActionEvent actionEvent) {
+        bookStatusField.setVisible(false);
+        if(isInputBook() && isValidBook()) {
+            Book book = getBook();
+            if(GlobalDAO.getInstance().getBookDAO().insert(book) == 1) {
+                bookStatusField.setText("Book Info inserted successfully");
+                bookStatusField.setVisible(true);
+                isbnField.clear();
+                libraryComboBox.setValue(null);
+            }
+            else {
+                bookStatusField.setText("Book Info insert failed");
+                bookStatusField.setVisible(true);
+            }
+        }
+    }
+
+    private Book getBook() {
+        String isbn = isbnField.getText().trim();
+        Library library = libraryComboBox.getValue();
+        return new Book(null,isbn, library.getLibraryID());
     }
 }

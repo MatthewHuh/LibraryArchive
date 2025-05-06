@@ -6,13 +6,13 @@ public class Book {
 	private int libraryID;
 
 
-	public Book(int bookID, String bookInfoID, int libraryID) {
+	public Book(Integer bookID, String bookInfoID, int libraryID) {
 		this.bookID = bookID;
 		this.bookInfoID = bookInfoID;
 		this.libraryID = libraryID;
 	}
 
-	public int getBookID() {
+	public Integer getBookID() {
 		return bookID;
 	}
 	

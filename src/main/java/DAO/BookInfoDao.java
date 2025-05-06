@@ -58,6 +58,48 @@ public class BookInfoDao implements DAO<BookInfo> {
         return bookInfo;
     }
 
+    public BookInfo get(String isbn)  {
+        //initialize variables
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        BookInfo bookInfo = null;
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+
+            //prepare statement
+            String query = "SELECT * FROM book_info WHERE isbn = ?";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, isbn);
+
+            //execute
+            rs = ps.executeQuery();
+
+            //return results
+            if(rs.next()){
+                String bookInfoId = rs.getString("isbn");
+                String author = rs.getString("author");
+                String genre = rs.getString("genre");
+                String title = rs.getString("title");
+                LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
+                bookInfo = new BookInfo(bookInfoId, author, genre, title, releaseDate);
+                return bookInfo;
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace(); //can have more robust logging
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return bookInfo;
+    }
+
     @Override
     public List<BookInfo> getAll() {
         //initialize variables
