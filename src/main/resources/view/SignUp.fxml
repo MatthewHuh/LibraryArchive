@@ -78,6 +78,7 @@
                 <!-- Error for city/state/zip -->
                 <Label fx:id="cityStateZipError"
                        GridPane.columnIndex="0"
+                       GridPane.rowIndex="1"
                        GridPane.columnSpan="3"
                        styleClass="error-label"
                        text="" />

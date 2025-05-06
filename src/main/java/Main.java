@@ -1,3 +1,6 @@
+import DAO.*;
+import POJO.Member;
+import POJO.Singleton.GlobalDAO;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -16,6 +19,15 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Library Login");
 			primaryStage.show();
+
+			//initialize all daos
+			BookDAO bookDAO = new BookDAO();
+			BookInfoDao  bookInfoDao = new BookInfoDao();
+			BorrowRecordDAO borrowRecordDAO = new BorrowRecordDAO();
+			LibraryDao libraryDao = new LibraryDao();
+			MemberDAO memberDAO = new MemberDAO();
+			//initialize the global singelton
+			GlobalDAO.getInstance().setAll(bookDAO, bookInfoDao, libraryDao, memberDAO, borrowRecordDAO);
 
 		} catch(Exception e) {
 			e.printStackTrace();

@@ -1,81 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.Insets?>
-
-<ScrollPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.AdminDashboardController"
-            prefHeight="400.0" prefWidth="600.0">
-    <VBox spacing="20">
-        <!-- Declare New Book -->
-        <TitledPane text="Declare New Book" expanded="true">
-            <content>
-                <VBox spacing="12" styleClass="form-box">
-                    <GridPane hgap="10" vgap="10">
-                        <columnConstraints>
-                            <ColumnConstraints halignment="RIGHT" />
-                            <ColumnConstraints hgrow="ALWAYS" />
-                        </columnConstraints>
-
-                        <Label text="Title:"       GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                        <TextField fx:id="newTitleField"     GridPane.rowIndex="0" GridPane.columnIndex="1" />
-
-                        <Label text="Author:"      GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                        <TextField fx:id="newAuthorField"    GridPane.rowIndex="1" GridPane.columnIndex="1" />
-
-                        <Label text="ISBN:"        GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                        <TextField fx:id="newIsbnField"      GridPane.rowIndex="2" GridPane.columnIndex="1" />
-
-                        <Label text="Genre:"       GridPane.rowIndex="3" GridPane.columnIndex="0" />
-                        <TextField fx:id="newGenreField"     GridPane.rowIndex="3" GridPane.columnIndex="1" />
-
-                        <Label text="Year:"        GridPane.rowIndex="4" GridPane.columnIndex="0" />
-                        <DatePicker fx:id="newDateField"      GridPane.rowIndex="4" GridPane.columnIndex="1" />
-                    </GridPane>
-
-                    <HBox alignment="CENTER_RIGHT" spacing="10">
-                        <Button fx:id="declareButton" onAction="#handleDeclareBook" text="Declare Book" />
-                    </HBox>
-                </VBox>
-            </content>
-        </TitledPane>
-
-        <!-- Add Book to Library -->
-        <TitledPane text="Add Book to Library" expanded="false">
-            <content>
-                <VBox spacing="12" styleClass="form-box">
-                    <GridPane hgap="10" vgap="10">
-                        <columnConstraints>
-                            <ColumnConstraints halignment="RIGHT" />
-                            <ColumnConstraints hgrow="ALWAYS" />
-                        </columnConstraints>
-
-                        <Label text="Select Book:"      GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                        <ComboBox fx:id="bookComboBox"   GridPane.rowIndex="0" GridPane.columnIndex="1" />
-
-                        <Label text="Select Library:"   GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                        <ComboBox fx:id="libraryComboBox" GridPane.rowIndex="1" GridPane.columnIndex="1" />
-
-                        <Label text="Copies:"           GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                        <TextField fx:id="copyCountField"  GridPane.rowIndex="2" GridPane.columnIndex="1" />
-                    </GridPane>
-
-                    <HBox alignment="CENTER_RIGHT" spacing="10">
-                        <Button fx:id="addToLibraryButton" onAction="#handleAddToLibrary" text="Add to Library" />
-                    </HBox>
-                </VBox>
-            </content>
-        </TitledPane>
-
-    </VBox>
+<ScrollPane prefHeight="400.0" prefWidth="600.0" styleClass="root-pane" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20" />
+        <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
+    <content>
+        <VBox spacing="20">
 
+            <!-- Declare New Book -->
+            <TitledPane expanded="true" text="Declare New Book">
+                <content>
+                    <VBox spacing="12" styleClass="form-box">
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="RIGHT" />
+                                <ColumnConstraints hgrow="ALWAYS" />
+                                <ColumnConstraints minWidth="120" />
+                            </columnConstraints>
+
+                            <!-- Title -->
+                            <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="newTitleField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Label fx:id="newTitleError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                            <!-- Author -->
+                            <Label text="Author:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <TextField fx:id="newAuthorField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label fx:id="newAuthorError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                            <!-- ISBN -->
+                            <Label text="ISBN:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <TextField fx:id="newIsbnField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <Label fx:id="newIsbnError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                            <!-- Genre -->
+                            <Label text="Genre:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <TextField fx:id="newGenreField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <Label fx:id="newGenreError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
+                            <!-- Year -->
+                            <Label text="Published Date:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                            <DatePicker fx:id="newDateField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                            <Label fx:id="newDateError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                        </GridPane>
+                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                            <Label fx:id="bookInfoStatusLable" text="status: " />
+                            <Label fx:id="bookInfoStatusField" text=""/>
+                            <Button fx:id="declareButton" onAction="#handleDeclareBook" text="Declare Book" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </TitledPane>
+
+            <!-- Add Book to Library -->
+            <TitledPane expanded="false" text="Add Book to Library">
+                <content>
+                    <VBox spacing="12" styleClass="form-box">
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="RIGHT" />
+                                <ColumnConstraints hgrow="ALWAYS" />
+                                <ColumnConstraints minWidth="120" />
+                            </columnConstraints>
+
+                            <!-- Select Book -->
+                            <Label text="ISBN: " GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="isbnField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Label fx:id="isbnError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                            <!-- Select Library -->
+                            <Label text="Select Library:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <ComboBox fx:id="libraryComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label fx:id="libraryError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                        </GridPane>
+                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                            <Label fx:id="bookStatusLable" text="status: " />
+                            <Label fx:id="bookStatusField" text="" />
+                            <Button fx:id="addToLibraryButton" onAction="#handleAddToLibrary" text="Add to Library" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </TitledPane>
+
+        </VBox>
+    </content>
 </ScrollPane>
