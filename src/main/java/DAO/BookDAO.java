@@ -36,8 +36,9 @@ public class BookDAO implements DAO<Book> {
             //return results
             if(rs.next()){
                 int book_id = rs.getInt("book_id");
-                int book_info_id = rs.getInt("book_info_id");
+                String book_info_id = rs.getString("isbn");
                 int library_id = rs.getInt("library_id");
+                int stock = rs.getInt("stock");
                 book = new Book(book_id, book_info_id, library_id);
                 return book;
             }
@@ -74,8 +75,9 @@ public class BookDAO implements DAO<Book> {
 
             while(rs.next()){
                 int book_id = rs.getInt("book_id");
-                int book_info_id = rs.getInt("book_info_id");
+                String book_info_id = rs.getString("isbn");
                 int library_id = rs.getInt("library_id");
+                int stock = rs.getInt("stock");
                 books.add(new Book(book_id, book_info_id, library_id));
             }
         }
@@ -101,9 +103,9 @@ public class BookDAO implements DAO<Book> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "INSERT INTO books (book_info_id, library_id) VALUES (?, ?)";
+            String query = "INSERT INTO books (isbn, library_id) VALUES (?, ?)";
             ps = connection.prepareStatement(query);
-            ps.setInt(1, book.getBookInfoID());
+            ps.setString(1, book.getBookInfoID());
             ps.setInt(2, book.getLibraryID());
 
             //execute update
@@ -133,9 +135,9 @@ public class BookDAO implements DAO<Book> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "UPDATE books SET book_info_id = ?, library_id = ? WHERE book_id = ?";
+            String query = "UPDATE books SET isbn = ?, library_id = ? WHERE book_id = ?";
             ps = connection.prepareStatement(query);
-            ps.setInt(1, book.getBookInfoID());
+            ps.setString(1, book.getBookInfoID());
             ps.setInt(2, book.getLibraryID());
             ps.setInt(3, book.getBookID());
 

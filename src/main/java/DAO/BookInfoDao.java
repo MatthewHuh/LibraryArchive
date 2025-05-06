@@ -5,6 +5,7 @@ import POJO.BookInfo;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class BookInfoDao implements DAO<BookInfo> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "SELECT * FROM book_info WHERE book_info_id = ?";
+            String query = "SELECT * FROM book_info WHERE isbn = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, id);
 
@@ -37,11 +38,11 @@ public class BookInfoDao implements DAO<BookInfo> {
 
             //return results
             if(rs.next()){
-                int bookInfoId = rs.getInt("book_info_id");
+                String bookInfoId = rs.getString("isbn");
                 String author = rs.getString("author");
                 String genre = rs.getString("genre");
                 String title = rs.getString("title");
-                Date releaseDate = rs.getDate("release_date");
+                LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
                 bookInfo = new BookInfo(bookInfoId, author, genre, title, releaseDate);
                 return bookInfo;
             }
@@ -77,11 +78,11 @@ public class BookInfoDao implements DAO<BookInfo> {
             rs = ps.executeQuery();
 
             while(rs.next()){
-                int bookInfoId = rs.getInt("book_info_id");
+                String bookInfoId = rs.getString("isbn");
                 String author = rs.getString("author");
                 String genre = rs.getString("genre");
                 String title = rs.getString("title");
-                Date releaseDate = rs.getDate("release_date");
+                LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
                 bookInfoList.add(new BookInfo(bookInfoId, author, genre, title, releaseDate));
             }
         }
@@ -107,13 +108,14 @@ public class BookInfoDao implements DAO<BookInfo> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "INSERT INTO book_info (author, genre, title, release_date) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO book_info (isbn, author, genre, title, release_date) VALUES (?, ?, ?, ?, ?)";
             ps = connection.prepareStatement(query);
 
-            ps.setString(1, bookInfo.getAuthor());
-            ps.setString(2, bookInfo.getGenre());
-            ps.setString(3, bookInfo.getTitle());
-            ps.setDate(4, bookInfo.getReleaseDate());
+            ps.setString(1, bookInfo.getISBN());
+            ps.setString(2, bookInfo.getAuthor());
+            ps.setString(3, bookInfo.getGenre());
+            ps.setString(4, bookInfo.getTitle());
+            ps.setDate(5, Date.valueOf(bookInfo.getReleaseDate()));
 
             //execute update
             rs = ps.executeUpdate();
@@ -142,13 +144,13 @@ public class BookInfoDao implements DAO<BookInfo> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "UPDATE book_info SET author = ?, genre = ?, title = ?, release_date = ? WHERE book_info_id = ?";
+            String query = "UPDATE book_info SET author = ?, genre = ?, title = ?, release_date = ? WHERE isbn = ?";
             ps = connection.prepareStatement(query);
             ps.setString(1, bookInfo.getAuthor());
             ps.setString(2, bookInfo.getGenre());
             ps.setString(3, bookInfo.getTitle());
-            ps.setDate(4, bookInfo.getReleaseDate());
-            ps.setInt(5, bookInfo.getBookInfoID());
+            ps.setDate(4, Date.valueOf(bookInfo.getReleaseDate()));
+            ps.setString(5, bookInfo.getISBN());
 
             //execute update
             rs = ps.executeUpdate();

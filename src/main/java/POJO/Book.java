@@ -2,10 +2,11 @@ package POJO;
 
 public class Book {
 	private Integer bookID;
-	private int bookInfoID;
+	private String bookInfoID;
 	private int libraryID;
 
-	public Book(int bookID, int bookInfoID, int libraryID) {
+
+	public Book(int bookID, String bookInfoID, int libraryID) {
 		this.bookID = bookID;
 		this.bookInfoID = bookInfoID;
 		this.libraryID = libraryID;
@@ -15,7 +16,7 @@ public class Book {
 		return bookID;
 	}
 	
-	public int getBookInfoID() {
+	public String getBookInfoID() {
 		return bookInfoID;
 	}
 	
@@ -27,11 +28,12 @@ public class Book {
 		this.bookID = bookID;
 	}
 	
-	public void setBookInfoID(int bookInfoID) {
+	public void setBookInfoID(String bookInfoID) {
 		this.bookInfoID = bookInfoID;
 	}
 	
 	public void setLibraryID(int libraryID) {
 		this.libraryID = libraryID;
 	}
+
 }
