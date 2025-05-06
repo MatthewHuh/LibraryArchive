@@ -14,6 +14,11 @@
             <Hyperlink fx:id="accountLink" onAction="#handleAccount" styleClass="nav-link" text="My Account" />
             <Hyperlink fx:id="borrowedLink" onAction="#handleBorrowed" styleClass="nav-link" text="Borrowed" />
             <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="adminButton"
+                     text="Admin Dashboard"
+                     onAction="#handleAdmin"
+                     visible="false"
+                     styleClass="nav-link" />
             <Button fx:id="logoutButton" onAction="#handleLogout" text="Logout" />
         </HBox>
     </top>

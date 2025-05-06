@@ -21,6 +21,9 @@ public class HomeController {
     public BorderPane mainPane;
 
     @FXML
+    private Button adminButton;
+
+    @FXML
     private Hyperlink accountLink;
 
     @FXML
@@ -42,7 +45,11 @@ public class HomeController {
     @FXML
     private HBox navBar;
 
+    private Member member;
+
     public void initialize() {
+        member = Session.get().getMember();
+        adminButton.setVisible(member != null && member.getIsAdmin());
         loadContent("/view/HomeContent.fxml");
     }
 
@@ -93,5 +100,9 @@ public class HomeController {
 
     public void handleBorrowed(ActionEvent actionEvent) {
         loadContent("/view/Borrowed.fxml");
+    }
+
+    public void handleAdmin(ActionEvent actionEvent) {
+        loadContent("/view/AdminDashboard.fxml");
     }
 }

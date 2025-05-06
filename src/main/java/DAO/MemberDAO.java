@@ -40,6 +40,7 @@ public class MemberDAO implements DAO<Member> {
                 String address = rs.getString("address");
                 String password = ""; // don't return password
                 Member member = new Member(id,first_name, last_name, phone_number, email, address, password);
+                member.setAdmin(rs.getBoolean("is_admin"));
                 return member;
             }
         }
@@ -172,6 +173,37 @@ public class MemberDAO implements DAO<Member> {
             try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
         return rs;
+    }
+
+    public boolean containsEmail(String inputEmail) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            //get connection
+            connection = ds.getConnection();
+            // hash input password before executing query
+            //prepare statement
+            String query = "SELECT email FROM members WHERE email = ?;";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, inputEmail);
+            //execute query
+            rs = ps.executeQuery();
+
+            if(rs.next()){
+                return true;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return false;
+
     }
 
     @Override

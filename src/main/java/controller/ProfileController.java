@@ -144,6 +144,32 @@ public class ProfileController {
                 stateField.setText(current.toUpperCase());
             }
         });
+        UnaryOperator<TextFormatter.Change> nameFilter = change -> {
+            String newText = change.getControlNewText();
+            return newText.matches("[a-zA-Z]{0,50}") ? change : null;
+        };
+        firstNameField.setTextFormatter(new TextFormatter<>(nameFilter));
+        lastNameField.setTextFormatter(new TextFormatter<>(nameFilter));
+
+        UnaryOperator<TextFormatter.Change> emailfilter = change -> {
+            String newText = change.getControlNewText();
+            return newText.matches("[A-Za-z@.]{0,62}") ? change : null;
+        };
+        emailField.setTextFormatter(new TextFormatter<>(emailfilter));
+
+        UnaryOperator<TextFormatter.Change> addressFilter = change -> {
+            String newText = change.getControlNewText();
+            // allow empty (so user can delete) or only letters+digits
+            return newText.matches("[A-Za-z0-9 ]{0,60}") ? change : null;
+        };
+        addressField.setTextFormatter(new TextFormatter<>(addressFilter));
+
+        UnaryOperator<TextFormatter.Change> cityFilter = change -> {
+            String newText = change.getControlNewText();
+            // allow empty (so user can delete) or only letters+digits
+            return newText.matches("[A-Za-z ]{0,59}") ? change : null;
+        };
+        cityField.setTextFormatter(new TextFormatter<>(cityFilter));
     }
 
     private String[] parseAddress(String address) {
@@ -166,11 +192,12 @@ public class ProfileController {
         if(isInput() && isValid()){
             Member member = getMember();
             MemberDAO memberDAO = new MemberDAO();
-            if(memberDAO.update(member) != 1 && !this.member.getEmail().equals(member.getEmail())) {
+            if(memberDAO.containsEmail(member.getEmail()) && !this.member.getEmail().equals(member.getEmail())) {
                 emailError.setText("Email already in use");
                 emailError.setVisible(true);
             }
             else {
+                memberDAO.update(member);
                 emailError.setVisible(false);
                 Session.get().setMember(member);
                 loadContent("/view/HomeContent.fxml");
@@ -180,12 +207,12 @@ public class ProfileController {
 
     private boolean isInput() {
         boolean flag = true;
-        if(addressField.getText().isEmpty()) {
+        if(addressField.getText().trim().isEmpty()) {
             addressError.setText("Please enter your address");
             addressError.setVisible(true);
             flag = false;
         } else {addressError.setVisible(false);}
-        if(emailField.getText().isEmpty()) {
+        if(emailField.getText().trim().isEmpty()) {
             emailError.setText("Please enter your email");
             emailError.setVisible(true);
             flag = false;
@@ -195,17 +222,17 @@ public class ProfileController {
             phoneError.setVisible(true);
             flag = false;
         } else {phoneError.setVisible(false);}
-        if(firstNameField.getText().isEmpty()) {
+        if(firstNameField.getText().trim().isEmpty()) {
             firstNameError.setText("Please enter your first name");
             firstNameError.setVisible(true);
             flag = false;
         } else {firstNameError.setVisible(false);}
-        if(lastNameField.getText().isEmpty()) {
+        if(lastNameField.getText().trim().isEmpty()) {
             lastNameError.setText("Please enter your last name");
             lastNameError.setVisible(true);
             flag = false;
         } else {lastNameError.setVisible(false);}
-        if(cityField.getText().isEmpty() || stateField.getText().isEmpty() || zipField.getText().isEmpty()) {
+        if(cityField.getText().trim().isEmpty() || stateField.getText().isEmpty() || zipField.getText().isEmpty()) {
             cityStateZipError.setText("Please enter your city, state, and zip code");
             cityStateZipError.setVisible(true);
             flag = false;
