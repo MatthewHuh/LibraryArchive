@@ -8,6 +8,7 @@ public class Member {
     private String email;
     private String address;
     private String hashedPassword;
+    private boolean isAdmin;
 
     public Member(Integer memberId, String firstName, String lastName, String phoneNumber, String email, String address, String hashedPassword) {
         this.memberId = memberId;
@@ -17,6 +18,7 @@ public class Member {
         this.email = email;
         this.address = address;
         this.hashedPassword = hashedPassword;
+        isAdmin = false;
     }
 
     public int getMemberId() {
@@ -47,6 +49,10 @@ public class Member {
         return phoneNumber;
     }
 
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -74,4 +80,9 @@ public class Member {
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
     }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
 }

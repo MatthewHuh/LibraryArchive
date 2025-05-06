@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS members (
     email VARCHAR(62) NOT NULL UNIQUE,
     address VARCHAR(130) NOT NULL,
     hashed_password VARCHAR(255) NOT NULL,
+    is_admin BOOLEAN DEFAULT 0,
     PRIMARY KEY (member_id)
     );
 
