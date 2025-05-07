@@ -82,7 +82,7 @@
                     <TableColumn fx:id="colAuthor" prefWidth="150" text="Author" />
                     <TableColumn fx:id="colISBN" prefWidth="120" text="ISBN" />
                     <TableColumn fx:id="colGenre" prefWidth="100" text="Genre" />
-                    <TableColumn fx:id="colYear" prefWidth="60" text="Release Date" />
+                    <TableColumn fx:id="colYear" prefWidth="88.0" text="Release Date" />
                 </columns>
             </TableView>
         </VBox>
