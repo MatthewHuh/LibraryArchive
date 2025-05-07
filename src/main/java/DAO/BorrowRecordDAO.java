@@ -1,6 +1,7 @@
 package DAO;
 
 
+import POJO.BorrowDisplayObject;
 import POJO.BorrowRecord;
 import POJO.Library;
 import com.zaxxer.hikari.HikariDataSource;
@@ -8,6 +9,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 import java.sql.SQLException;
 
 public class BorrowRecordDAO implements DAO<BorrowRecord> {
@@ -165,5 +167,47 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
 
         return rs;
     }
+
+    public List<BorrowDisplayObject> getBorrowDisplayObject(String isbn) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<BorrowDisplayObject> borrowDisplayObjectList = new ArrayList<>();
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+            //prepare statement
+            String query = "SELECT book_id, title, return_date, name as library_name, address as library_address FROM book_info INNER JOIN books on book_info.isbn = books.isbn INNER JOIN books on library.library_id = books.library_id WHERE book_info.isbn = ?";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, isbn);
+            //execute query
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+
+                int book_id = rs.getInt("book_id");
+                String title = rs.getString("title");
+                Date return_date = rs.getDate("return_date");
+                String library_name = rs.getString("library_name");
+                String library_address = rs.getString("library_address");
+
+                borrowDisplayObjectList.add(new BorrowDisplayObject(book_id, title, isbn, true, return_date, library_name, library_address));
+            }
+
+        }
+        catch (SQLException e){
+            e.printStackTrace(); //can have more robust logging
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return borrowDisplayObjectList;
+    }
+
+
 
 }
