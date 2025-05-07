@@ -114,7 +114,7 @@ public class BookInfoDao implements DAO<BookInfo> {
             //get connection
             connection = ds.getConnection();
             //prepare statement
-            String query = "SELECT * FROM books";
+            String query = "SELECT * FROM book_info";
             ps = connection.prepareStatement(query);
             //execute query
             rs = ps.executeQuery();
