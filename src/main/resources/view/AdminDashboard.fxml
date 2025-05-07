@@ -22,20 +22,20 @@
                                 <ColumnConstraints minWidth="120" />
                             </columnConstraints>
 
+                            <!-- ISBN -->
+                            <Label text="ISBN:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="newIsbnField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Label fx:id="newIsbnError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
                             <!-- Title -->
-                            <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField fx:id="newTitleField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                            <Label fx:id="newTitleError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <TextField fx:id="newTitleField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label fx:id="newTitleError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
                             <!-- Author -->
-                            <Label text="Author:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                            <TextField fx:id="newAuthorField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                            <Label fx:id="newAuthorError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-
-                            <!-- ISBN -->
-                            <Label text="ISBN:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                            <TextField fx:id="newIsbnField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                            <Label fx:id="newIsbnError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                            <Label text="Author:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <TextField fx:id="newAuthorField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <Label fx:id="newAuthorError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
                             <!-- Genre -->
                             <Label text="Genre:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
@@ -58,6 +58,55 @@
                             <Label fx:id="bookInfoStatusLable" text="status: " />
                             <Label fx:id="bookInfoStatusField" text=""/>
                             <Button fx:id="declareButton" onAction="#handleDeclareBook" text="Declare Book" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </TitledPane>
+
+            <TitledPane expanded="false" text="Edit book info">
+                <content>
+                    <VBox spacing="12" styleClass="form-box">
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="RIGHT" />
+                                <ColumnConstraints hgrow="ALWAYS" />
+                                <ColumnConstraints minWidth="120" />
+                            </columnConstraints>
+
+                            <!-- Enter ISBN-->
+                            <Label text="ISBN: " GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="editIsbnField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Label fx:id="editIsbnError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                            <!-- Title -->
+                            <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <TextField fx:id="editTitleField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label fx:id="editTitleError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                            <!-- Author -->
+                            <Label text="Author:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <TextField fx:id="editAuthorField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <Label fx:id="editAuthorError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                            <!-- Genre -->
+                            <Label text="Genre:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <TextField fx:id="editGenreField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <Label fx:id="editGenreError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
+                            <!-- Year -->
+                            <Label text="Published Date:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                            <DatePicker fx:id="editDateField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                            <Label fx:id="editDateError" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
+                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                            <Label fx:id="editStatusLable" text="status: " />
+                            <Label fx:id="editStatusField" text="" />
+                            <Button fx:id="addEditButton" onAction="#handleAddEdit" text="Confirm" />
                         </HBox>
                     </VBox>
                 </content>

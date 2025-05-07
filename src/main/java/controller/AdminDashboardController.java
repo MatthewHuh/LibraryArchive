@@ -16,10 +16,10 @@ import java.util.function.UnaryOperator;
 public class AdminDashboardController {
 
     @FXML
-    private Button addToLibraryButton;
+    private Button addEditButton;
 
     @FXML
-    private Label isbnError;
+    private Button addToLibraryButton;
 
     @FXML
     private Label bookInfoStatusField;
@@ -34,10 +34,49 @@ public class AdminDashboardController {
     private Label bookStatusLable;
 
     @FXML
-    private TextField isbnField;
+    private Button declareButton;
 
     @FXML
-    private Button declareButton;
+    private Label editAuthorError;
+
+    @FXML
+    private TextField editAuthorField;
+
+    @FXML
+    private Label editDateError;
+
+    @FXML
+    private DatePicker editDateField;
+
+    @FXML
+    private Label editGenreError;
+
+    @FXML
+    private TextField editGenreField;
+
+    @FXML
+    private Label editIsbnError;
+
+    @FXML
+    private TextField editIsbnField;
+
+    @FXML
+    private Label editStatusField;
+
+    @FXML
+    private Label editStatusLable;
+
+    @FXML
+    private Label editTitleError;
+
+    @FXML
+    private TextField editTitleField;
+
+    @FXML
+    private Label isbnError;
+
+    @FXML
+    private TextField isbnField;
 
     @FXML
     private ComboBox<Library> libraryComboBox;
@@ -82,12 +121,14 @@ public class AdminDashboardController {
             return newText.matches("[a-zA-Z ,]{0,255}") ? change : null;
         };
         newAuthorField.setTextFormatter(new TextFormatter<>(authorFilter));
+        editAuthorField.setTextFormatter(new TextFormatter<>(authorFilter));
 
         UnaryOperator<TextFormatter.Change> titleFilter = change -> {
             String newText = change.getControlNewText();
-            return newText.matches("[a-zA-Z ,]{0,255}") ? change : null;
+            return newText.matches("[a-zA-Z ,1234567890]{0,255}") ? change : null;
         };
         newTitleField.setTextFormatter(new TextFormatter<>(titleFilter));
+        editTitleField.setTextFormatter(new TextFormatter<>(titleFilter));
 
         UnaryOperator<TextFormatter.Change> isbnFilter = change -> {
             String newText = change.getControlNewText();
@@ -95,12 +136,14 @@ public class AdminDashboardController {
         };
         newIsbnField.setTextFormatter(new TextFormatter<>(isbnFilter));
         isbnField.setTextFormatter(new TextFormatter<>(isbnFilter));
+        editIsbnField.setTextFormatter(new TextFormatter<>(isbnFilter));
 
         UnaryOperator<TextFormatter.Change> genreFilter = change -> {
             String newText = change.getControlNewText();
-            return newText.matches("[a-zA-Z]{0,50}") ? change : null;
+            return newText.matches("[a-zA-Z ]{0,50}") ? change : null;
         };
         newGenreField.setTextFormatter(new TextFormatter<>(genreFilter));
+        editGenreField.setTextFormatter(new TextFormatter<>(genreFilter));
 
         List<Library> libraries = GlobalDAO.getInstance().getLibraryDao().getAll();
         for (Library library : libraries) {
@@ -181,6 +224,49 @@ public class AdminDashboardController {
         return true;
     }
 
+    private boolean isInputEdit() {
+        boolean flag = true;
+        if(editIsbnField.getText().trim().isEmpty()) {
+            editIsbnError.setText("Please enter an ISBN");
+            editIsbnError.setVisible(true);
+            flag = false;
+        }  else {editIsbnError.setVisible(false);}
+        if(editTitleField.getText().trim().isEmpty() &&
+            editAuthorField.getText().trim().isEmpty() &&
+            editGenreField.getText().trim().isEmpty() &&
+            editDateField.getValue() == null) {
+            editTitleError.setText("Please enter the title or");
+            editTitleError.setVisible(true);
+            editAuthorError.setText("Please enter the author or");
+            editAuthorError.setVisible(true);
+            editGenreError.setText("Please enter the genre");
+            editGenreError.setVisible(true);
+            editDateError.setText("Please enter the date");
+            editDateError.setVisible(true);
+            flag = false;
+        } else {
+            editTitleError.setVisible(false);
+            editAuthorError.setVisible(false);
+            editGenreError.setVisible(false);
+            editDateError.setVisible(false);
+        }
+        return flag;
+    }
+
+    private boolean isValidEdit() {
+        if(editIsbnField.getText().trim().length() != 13) {
+            editIsbnError.setText("Please enter a valid ISBN");
+            editIsbnError.setVisible(true);
+            return false;
+        }
+        if(GlobalDAO.getInstance().getBookInfoDAO().get(editIsbnField.getText()) == null) {
+            editIsbnError.setText("Book Not Found");
+            editIsbnError.setVisible(true);
+            return false;
+        }
+        return true;
+    }
+
     public void handleDeclareBook(ActionEvent actionEvent) {
         bookInfoStatusField.setVisible(false);
         if(isInputBookInfo() && isValidBookInfo()) {
@@ -230,5 +316,47 @@ public class AdminDashboardController {
         String isbn = isbnField.getText().trim();
         Library library = libraryComboBox.getValue();
         return new Book(null,isbn, library.getLibraryID());
+    }
+
+    public void handleAddEdit(ActionEvent actionEvent) {
+        if(isInputEdit() && isValidEdit()) {
+            String isbn = editIsbnField.getText().trim();
+            BookInfo newBookInfo = getEditBookInfo(GlobalDAO.getInstance().getBookInfoDAO().get(isbn));
+            if(GlobalDAO.getInstance().getBookInfoDAO().update(newBookInfo) == 1) {
+                editStatusField.setText("Book Info updated successfully");
+                editStatusField.setVisible(true);
+                editIsbnField.clear();
+                editTitleField.clear();
+                editAuthorField.clear();
+                editGenreField.clear();
+                editDateField.setValue(null);
+            }
+            else {
+                editStatusField.setText("Book Info update failed");
+                editStatusField.setVisible(true);
+            }
+        }
+    }
+
+    private BookInfo getEditBookInfo (BookInfo bookInfo) {
+        String isbn = bookInfo.getISBN();
+        String title = bookInfo.getTitle();
+        String author =  bookInfo.getAuthor();
+        String genre =  bookInfo.getGenre();
+        LocalDate year = bookInfo.getReleaseDate();
+
+        if(!editGenreField.getText().trim().isEmpty()) {
+            genre = editGenreField.getText().trim();
+        }
+        if(!editTitleField.getText().trim().isEmpty()) {
+            title = editTitleField.getText().trim();
+        }
+        if(!editAuthorField.getText().trim().isEmpty()) {
+            author = editAuthorField.getText().trim();
+        }
+        if(editDateField.getValue() != null) {
+            year =  editDateField.getValue();
+        }
+        return new BookInfo(isbn, author, genre, title, year);
     }
 }
