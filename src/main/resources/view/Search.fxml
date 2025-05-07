@@ -22,7 +22,7 @@
 
             <!-- Basic Search -->
             <HBox fx:id="basicSearchBar" alignment="CENTER_LEFT" spacing="10">
-                <TextField fx:id="basicSearchField" promptText="Search by title, author, or ISBN" HBox.hgrow="ALWAYS" />
+                <TextField fx:id="basicSearchField" promptText="Search by title" HBox.hgrow="ALWAYS" />
                 <Button fx:id="basicSearchButton" onAction="#onBasicSearch" text="Search" />
             </HBox>
 
@@ -82,8 +82,7 @@
                     <TableColumn fx:id="colAuthor" prefWidth="150" text="Author" />
                     <TableColumn fx:id="colISBN" prefWidth="120" text="ISBN" />
                     <TableColumn fx:id="colGenre" prefWidth="100" text="Genre" />
-                    <TableColumn fx:id="colYear" prefWidth="60" text="Year" />
-                    <TableColumn fx:id="colAvailable" prefWidth="80" text="Available" />
+                    <TableColumn fx:id="colYear" prefWidth="60" text="Release Date" />
                 </columns>
             </TableView>
         </VBox>
