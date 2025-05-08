@@ -3,7 +3,6 @@ package DAO;
 
 import POJO.BorrowDisplayObject;
 import POJO.BorrowRecord;
-import POJO.Library;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
@@ -11,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+
 
 public class BorrowRecordDAO implements DAO<BorrowRecord> {
 
@@ -179,7 +180,8 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             //get connection
             connection = ds.getConnection();
             //prepare statement
-            String query = "SELECT book_id, title, return_date, name as library_name, address as library_address FROM book_info INNER JOIN books on book_info.isbn = books.isbn INNER JOIN books on library.library_id = books.library_id WHERE book_info.isbn = ?";
+            String query = "SELECT b.book_id, bi.title, l.name as library_name, l.address as library_address FROM book_info bi INNER JOIN books b ON bi.isbn = b.isbn INNER JOIN libraries l ON b.library_id = l.library_id WHERE bi.isbn = ? ";
+
             ps = connection.prepareStatement(query);
             ps.setString(1, isbn);
             //execute query
@@ -189,11 +191,12 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
 
                 int book_id = rs.getInt("book_id");
                 String title = rs.getString("title");
-                Date return_date = rs.getDate("return_date");
                 String library_name = rs.getString("library_name");
                 String library_address = rs.getString("library_address");
-
-                borrowDisplayObjectList.add(new BorrowDisplayObject(book_id, title, isbn, true, return_date, library_name, library_address));
+                //return date is just two weeks from now
+                LocalDate futureDate = LocalDate.now().plusWeeks(2);;
+                Date returnDate = Date.valueOf(futureDate);
+                borrowDisplayObjectList.add(new BorrowDisplayObject(book_id, title, isbn, true, returnDate, library_name, library_address));
             }
 
         }

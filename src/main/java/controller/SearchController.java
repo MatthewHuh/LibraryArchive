@@ -84,12 +84,13 @@ public class SearchController  {
         if (mouseEvent.getClickCount() == 2 || mouseEvent.getClickCount() == 1) {
             URL url = getClass().getResource("/view/BorrowBook.fxml");
             BookInfo selectedBook = resultsTable.getSelectionModel().getSelectedItem();
-
             try {
                 FXMLLoader loader = new FXMLLoader(url);
+
+                BorrowBookController controller = new BorrowBookController(selectedBook);
+                loader.setController(controller);
                 Parent root = loader.load();
-                BorrowBookController borrowBookController = loader.getController();
-                borrowBookController.setBookInfo(selectedBook);
+
                 CommonObjs.getInstance().getBorderPane().setCenter(root);
             } catch (IOException e) {
                 e.printStackTrace();

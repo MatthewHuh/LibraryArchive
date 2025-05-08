@@ -1,70 +1,70 @@
 package controller;
 
+import DAO.BookInfoDao;
 import DAO.BorrowRecordDAO;
 import POJO.BookInfo;
 import POJO.BorrowDisplayObject;
+import POJO.BorrowRecord;
+import POJO.Member;
 import POJO.Singleton.GlobalDAO;
+import POJO.Singleton.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 
 public class BorrowBookController {
-    @FXML
     public TableView<BorrowDisplayObject> borrowBookTable;
-    @FXML
-    public TableColumn<BorrowDisplayObject, String> colBorrowTitle;
-    @FXML
-    public TableColumn<BorrowDisplayObject, String> colBorrowISBN;
-    @FXML
-    public TableColumn<BorrowDisplayObject, String> colBorrowDueDate;
-    @FXML
-    public TableColumn<BorrowDisplayObject, String> colLibraryName;
-    @FXML
-    public TableColumn<BorrowDisplayObject, String> colLibraryAddress;
-    private BookInfo currentBook;
+    public TableColumn colBorrowTitle;
+    public TableColumn colBorrowISBN;
+    public TableColumn colBorrowDueDate;
+    public TableColumn colLibraryName;
+    public TableColumn colLibraryAddress;
 
+    private BookInfo currentBook;
+    private BorrowRecordDAO borrowRecordDAO;
+
+    public BorrowBookController(BookInfo currentBook) {
+        this.currentBook = currentBook;
+    }
     private ObservableList<BorrowDisplayObject> borrowableBooksLists = FXCollections.observableArrayList();
 
 
     public void handleBorrowButton(ActionEvent actionEvent) {
-        // Implement borrow logic here, using currentBook if needed
+        BorrowDisplayObject selectedRecord = borrowBookTable.getSelectionModel().getSelectedItem();
+        System.out.println(selectedRecord.getBookID());
+        Member user = Session.get().getMember();
+
+        BorrowRecord borrowRecord = new BorrowRecord(null, user.getMemberId(), selectedRecord.getBookID(), 0, selectedRecord.getReturnDate());
+        borrowRecordDAO.insert(borrowRecord);
     }
 
-    public void setBookInfo(BookInfo book) {
-        this.currentBook = book;
-        // Load the borrowable books now that we have the currentBook
-        loadBorrowableBooks();
-    }
+
 
     public void initialize() {
         colBorrowTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colBorrowISBN.setCellValueFactory(new PropertyValueFactory<>("ISBN"));
         colLibraryName.setCellValueFactory(new PropertyValueFactory<>("LibraryName"));
         colLibraryAddress.setCellValueFactory(new PropertyValueFactory<>("LibraryAddress"));
-        colBorrowDueDate.setCellValueFactory(new PropertyValueFactory<>("dueDate")); // Assuming "dueDate" property
+        colBorrowDueDate.setCellValueFactory(new PropertyValueFactory<>("ReturnDate"));
+        this.borrowRecordDAO = GlobalDAO.getInstance().getBorrowRecordDAO();
+
+        if(currentBook != null) {
+            List<BorrowDisplayObject> borrowDisplayObjects = borrowRecordDAO.getBorrowDisplayObject(currentBook.getISBN());
+            if (borrowDisplayObjects != null) {
+                borrowableBooksLists.addAll(borrowDisplayObjects);
+            }
+        }
+
 
         borrowBookTable.setItems(borrowableBooksLists);
     }
-
-    private void loadBorrowableBooks() {
-        if (currentBook != null) {
-            BorrowRecordDAO borrowRecordDAO = GlobalDAO.getInstance().getBorrowRecordDAO();
-            List<BorrowDisplayObject> borrowDisplayObjects = borrowRecordDAO.getBorrowDisplayObject(currentBook.getISBN());
-            if (borrowDisplayObjects != null) {
-                borrowableBooksLists.clear();
-                borrowableBooksLists.addAll(borrowDisplayObjects);
-            } else {
-                borrowableBooksLists.clear(); // Ensure the table is empty if no data
-            }
-        } else {
-            System.err.println("Error: currentBook is null while trying to load borrowable books.");
-            borrowableBooksLists.clear();
-        }
+    public void setBookInfo(BookInfo book) {
+        this.currentBook = book;
+        System.out.println(book.getISBN());
     }
 }

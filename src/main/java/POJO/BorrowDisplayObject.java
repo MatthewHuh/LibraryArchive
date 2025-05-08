@@ -38,11 +38,11 @@ public class BorrowDisplayObject {
         this.title = title;
     }
 
-    public String getIsbn() {
+    public String getISBN() {
         return isbn;
     }
 
-    public void setIsbn(String isbn) {
+    public void setISBN(String isbn) {
         this.isbn = isbn;
     }
 

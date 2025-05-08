@@ -3,13 +3,13 @@ package POJO;
 import java.sql.Date;
 
 public class BorrowRecord {
-	private int borrowRecordID;
+	private Integer borrowRecordID;
 	private int memberID;
 	private int bookID;
 	private int lateFee;
 	private Date returnDate;
 	
-	public BorrowRecord(int borrowRecordID, int memberID, int bookID,
+	public BorrowRecord(Integer borrowRecordID, int memberID, int bookID,
 			int lateFee, Date returnDate) {
 		this.borrowRecordID = borrowRecordID;
 		this.memberID = memberID;
@@ -22,7 +22,7 @@ public class BorrowRecord {
 		return bookID;
 	}
 	
-	public int getBorrowRecordID() {
+	public Integer getBorrowRecordID() {
 		return borrowRecordID;
 	}
 	
@@ -38,7 +38,7 @@ public class BorrowRecord {
 		return returnDate;
 	}
 	
-	public void setBookID(int bookID) {
+	public void setBookID(Integer bookID) {
 		this.bookID = bookID;
 	}
 	
