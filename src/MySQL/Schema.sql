@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS members (
     email VARCHAR(62) NOT NULL UNIQUE,
     address VARCHAR(130) NOT NULL,
     hashed_password VARCHAR(255) NOT NULL,
-    is_admin BOOLEAN DEFAULT 0,
+    is_admin BOOLEAN NOT NULL DEFAULT 0,
     PRIMARY KEY (member_id)
     );
 
@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS books (
     book_id INTEGER NOT NULL AUTO_INCREMENT,
     isbn CHAR(13) NOT NULL,
     library_id INTEGER NOT NULL,
+    is_available BOOLEAN NOT NULL DEFAULT 1,
     PRIMARY KEY (book_id),
     FOREIGN KEY (isbn) REFERENCES book_info(isbn),
     FOREIGN KEY (library_id) REFERENCES libraries(library_id)
@@ -44,7 +45,6 @@ CREATE TABLE IF NOT EXISTS borrow_record (
     borrow_record_id INTEGER NOT NULL AUTO_INCREMENT,
     member_id INTEGER NOT NULL,
     book_id INTEGER NOT NULL,
-    late_fee INTEGER NOT NULL,
     return_date DATE NOT NULL,
     is_returned BOOLEAN NOT NULL,
     PRIMARY KEY (borrow_record_id),

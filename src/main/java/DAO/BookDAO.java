@@ -38,8 +38,8 @@ public class BookDAO implements DAO<Book> {
                 int book_id = rs.getInt("book_id");
                 String book_info_id = rs.getString("isbn");
                 int library_id = rs.getInt("library_id");
-                int stock = rs.getInt("stock");
-                book = new Book(book_id, book_info_id, library_id);
+                boolean is_available = rs.getBoolean("is_available");
+                book = new Book(book_id, book_info_id, library_id,  is_available);
                 return book;
             }
         }
@@ -77,8 +77,8 @@ public class BookDAO implements DAO<Book> {
                 int book_id = rs.getInt("book_id");
                 String book_info_id = rs.getString("isbn");
                 int library_id = rs.getInt("library_id");
-                int stock = rs.getInt("stock");
-                books.add(new Book(book_id, book_info_id, library_id));
+                boolean is_available = rs.getBoolean("is_available");
+                books.add(new Book(book_id, book_info_id, library_id, is_available));
             }
         }
         catch (SQLException e){

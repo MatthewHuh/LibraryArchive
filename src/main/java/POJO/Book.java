@@ -4,12 +4,14 @@ public class Book {
 	private Integer bookID;
 	private String bookInfoID;
 	private int libraryID;
+	private boolean isAvailable;
 
 
-	public Book(Integer bookID, String bookInfoID, int libraryID) {
+	public Book(Integer bookID, String bookInfoID, int libraryID,  boolean isAvailable) {
 		this.bookID = bookID;
 		this.bookInfoID = bookInfoID;
 		this.libraryID = libraryID;
+		this.isAvailable = isAvailable;
 	}
 
 	public Integer getBookID() {
@@ -23,6 +25,8 @@ public class Book {
 	public int getLibraryID() {
 		return libraryID;
 	}
+
+	public boolean isAvailable() { return  isAvailable; }
 	
 	public void setBookID(int bookID) {
 		this.bookID = bookID;
@@ -34,6 +38,10 @@ public class Book {
 	
 	public void setLibraryID(int libraryID) {
 		this.libraryID = libraryID;
+	}
+
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
 	}
 
 }

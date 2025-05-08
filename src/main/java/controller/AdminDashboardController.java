@@ -315,7 +315,7 @@ public class AdminDashboardController {
     private Book getBook() {
         String isbn = isbnField.getText().trim();
         Library library = libraryComboBox.getValue();
-        return new Book(null,isbn, library.getLibraryID());
+        return new Book(null,isbn, library.getLibraryID(), true);
     }
 
     public void handleAddEdit(ActionEvent actionEvent) {
