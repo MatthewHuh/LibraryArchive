@@ -44,8 +44,9 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
                 int member_id = rs.getInt("member_id");
                 int book_id = rs.getInt("book_id");
                 Date return_date = rs.getDate("return_date");
+                boolean  is_returned = rs.getBoolean("is_returned");
 
-                borrowRecord = new BorrowRecord(borrow_record_id, member_id, book_id, return_date);
+                borrowRecord = new BorrowRecord(borrow_record_id, member_id, book_id, return_date, is_returned);
                 return borrowRecord;
             }
         }
@@ -84,7 +85,8 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
                 int member_id = rs.getInt("member_id");
                 int book_id = rs.getInt("book_id");
                 Date return_date = rs.getDate("return_date");
-                borrowRecords.add(new BorrowRecord(borrow_record_id, member_id, book_id, return_date ));
+                boolean  is_returned = rs.getBoolean("is_returned");
+                borrowRecords.add(new BorrowRecord(borrow_record_id, member_id, book_id, return_date, is_returned));
 
             }
         }
@@ -123,7 +125,8 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
                 int member_id = rs.getInt("member_id");
                 int book_id = rs.getInt("book_id");
                 Date return_date = rs.getDate("return_date");
-                borrowRecords.add(new BorrowRecord(borrow_record_id, member_id, book_id, return_date ));
+                boolean  is_returned = rs.getBoolean("is_returned");
+                borrowRecords.add(new BorrowRecord(borrow_record_id, member_id, book_id, return_date, is_returned));
 
             }
         }
@@ -182,11 +185,13 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "UPDATE borrow_record SET member_id = ?, book_id = ?, return_date = ? WHERE library_id = ?";
+            String query = "UPDATE borrow_record SET member_id = ?, book_id = ?, return_date = ?, is_returned = ? WHERE borrow_record_id = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, borrowRecord.getMemberID());
             ps.setInt(2, borrowRecord.getBookID());
             ps.setDate(3, borrowRecord.getReturnDate());
+            ps.setBoolean(4, borrowRecord.isReturned());
+            ps.setInt(5, borrowRecord.getBorrowRecordID());
 
             //execute update
             rs = ps.executeUpdate();
