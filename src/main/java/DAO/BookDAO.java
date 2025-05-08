@@ -54,6 +54,37 @@ public class BookDAO implements DAO<Book> {
         return book;
     }
 
+    public boolean hasAvailableCopies(String isbn) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean available = false;
+
+        try {
+            connection = ds.getConnection();
+            String query =
+                    "SELECT COUNT(*) " +
+                            "  FROM books " +
+                            " WHERE isbn = ? " +
+                            "   AND is_available = 1";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, isbn);
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                available = rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  // or your preferred logging
+        } finally {
+            try { if (rs != null)         rs.close();       } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null)         ps.close();       } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+
+        return available;
+    }
+
     @Override
     public List<Book> getAll() {
         //initialize variables

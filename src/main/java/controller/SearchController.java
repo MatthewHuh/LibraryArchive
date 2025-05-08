@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.BookDAO;
 import DAO.BookInfoDao;
 import POJO.BookInfo;
 import POJO.Singleton.CommonObjs;
@@ -10,7 +11,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -42,11 +42,12 @@ public class SearchController  {
     public TextField titleField;
     public TextField authorField;
     public TextField isbnField;
-    public ChoiceBox genreBox;
+    public ChoiceBox<String> genreBox;
     public TextField yearFromField;
     public TextField yearToField;
 
     public TextField basicSearchField;
+    public CheckBox availableOnlyCheck;
 
 
     private ObservableList<BookInfo> allBooks = FXCollections.observableArrayList();
@@ -69,6 +70,7 @@ public class SearchController  {
         resultsTable.setItems(filteredBooks);
         resultsTable.setOnMouseClicked(this::handleRowClick);
 
+        genreBox.getItems().addAll(bookInfoDao.getGenre());
     }
 
 
@@ -116,6 +118,8 @@ public class SearchController  {
         }
 
         filteredBooks.setPredicate(null);
+
+        availableOnlyCheck.setSelected(false);
     }
 
     @FXML
@@ -126,12 +130,19 @@ public class SearchController  {
         String genreFilter = (String) genreBox.getValue();
         String yearFromFilter = yearFromField.getText();
         String yearToFilter = yearToField.getText();
+        boolean availOnly = availableOnlyCheck.isSelected();
+
+        BookDAO bookDAO = GlobalDAO.getInstance().getBookDAO();
 
         filteredBooks.setPredicate(book -> {
             boolean titleMatch = titleFilter.isEmpty() || book.getTitle().toLowerCase().contains(titleFilter);
             boolean authorMatch = authorFilter.isEmpty() || book.getAuthor().toLowerCase().contains(authorFilter);
             boolean isbnMatch = isbnFilter.isEmpty() || book.getISBN().toLowerCase().contains(isbnFilter);
             boolean genreMatch = genreFilter == null || genreFilter.isEmpty() || book.getGenre().equals(genreFilter);
+            boolean availableMatch = true;
+            if (availableOnlyCheck.isSelected()) {
+                availableMatch = bookDAO.hasAvailableCopies(book.getISBN());
+            }
 
             int fromYear = -1;
             try {
@@ -155,7 +166,7 @@ public class SearchController  {
             boolean yearMatch = (yearFromFilter.isEmpty() || bookYear >= fromYear) &&
                     (yearToFilter.isEmpty() || bookYear <= toYear);
 
-            return titleMatch && authorMatch && isbnMatch && genreMatch && yearMatch;
+            return titleMatch && authorMatch && isbnMatch && genreMatch && yearMatch && availableMatch;
         });
     }
 
