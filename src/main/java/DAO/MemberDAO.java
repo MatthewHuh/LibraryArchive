@@ -241,4 +241,32 @@ public class MemberDAO implements DAO<Member> {
 
         return rs;
     }
+
+    //
+    public int delete(int id){
+        Connection connection = null;
+        PreparedStatement ps = null;
+        int rs = 0;
+
+        try{
+            connection = ds.getConnection();
+
+            //prepare statement
+            String query = "DELETE FROM members WHERE member_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+
+            rs = ps.executeUpdate();
+            return rs;
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return rs;
+    }
 }
