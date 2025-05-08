@@ -63,7 +63,7 @@ public class BorrowBookController {
         BorrowDisplayObject selectedRecord = borrowBookTable.getSelectionModel().getSelectedItem();
         if (selectedRecord.isAvailable()) {
             Member user = Session.get().getMember();
-            BorrowRecord borrowRecord = new BorrowRecord(null, user.getMemberId(), selectedRecord.getBookID(), selectedRecord.getReturnDate());
+            BorrowRecord borrowRecord = new BorrowRecord(null, user.getMemberId(), selectedRecord.getBookID(), selectedRecord.getReturnDate(), false);
             borrowRecordDAO.insert(borrowRecord);
             borrowStatusField.textProperty().setValue("Successfully borrowed Book");
 

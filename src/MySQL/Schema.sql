@@ -55,3 +55,7 @@ CREATE TABLE IF NOT EXISTS borrow_record (
 CREATE TRIGGER IF NOT EXISTS checkout_book
     AFTER INSERT ON borrow_record FOR EACH ROW
     UPDATE books b SET is_available = 0 WHERE b.book_id = NEW.book_id;
+
+CREATE TRIGGER IF NOT EXISTS checkin_book
+    AFTER UPDATE ON borrow_record FOR EACH ROW
+    UPDATE books b SET is_available = 1 WHERE b.book_id = NEW.book_id;

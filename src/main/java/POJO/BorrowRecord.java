@@ -7,12 +7,14 @@ public class BorrowRecord {
 	private int memberID;
 	private int bookID;
 	private Date returnDate;
+	private boolean isReturned;
 	
-	public BorrowRecord(Integer borrowRecordID, int memberID, int bookID, Date returnDate) {
+	public BorrowRecord(Integer borrowRecordID, int memberID, int bookID, Date returnDate, boolean isReturned) {
 		this.borrowRecordID = borrowRecordID;
 		this.memberID = memberID;
 		this.bookID = bookID;
 		this.returnDate = returnDate;
+		this.isReturned = isReturned;
 	}
 	
 	public int getBookID() {
@@ -30,6 +32,10 @@ public class BorrowRecord {
 	public Date getReturnDate() {
 		return returnDate;
 	}
+
+	public boolean isReturned() {
+		return isReturned;
+	}
 	
 	public void setBookID(Integer bookID) {
 		this.bookID = bookID;
@@ -45,5 +51,9 @@ public class BorrowRecord {
 	
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
+	}
+
+	public void setIsReturned(boolean isReturned) {
+		this.isReturned = isReturned;
 	}
 }

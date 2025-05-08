@@ -8,16 +8,16 @@ import POJO.BorrowRecord;
 import POJO.Member;
 import POJO.Singleton.GlobalDAO;
 import POJO.Singleton.Session;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.text.NumberFormat;
@@ -27,6 +27,17 @@ import java.time.temporal.Temporal;
 import java.util.List;
 
 public class BorrowedController {
+    @FXML
+    public Button returnButton;
+
+    @FXML
+    public TextField statusField;
+
+    @FXML
+    public Button filterReturned;
+
+    public TableColumn<BorrowRecord, Boolean> colReturned;
+
     @FXML
     private TableView<BorrowRecord> borrowedTable;
 
@@ -49,6 +60,7 @@ public class BorrowedController {
     private Label totalFeesLabel;
 
     private ObservableList<BorrowRecord> allBorrows = FXCollections.observableArrayList();
+    private FilteredList<BorrowRecord> filteredList;
 
     @FXML
     private void initialize() {
@@ -93,10 +105,27 @@ public class BorrowedController {
             return new SimpleStringProperty(fmt);
         });
 
+        colReturned.setCellValueFactory(cell ->
+                new SimpleBooleanProperty(cell.getValue().isReturned()).asObject()
+        );
+
+        colReturned.setCellFactory(tc -> new TableCell<>() {
+            @Override
+            protected void updateItem(Boolean returned, boolean empty) {
+                super.updateItem(returned, empty);
+                setText(empty ? "" : (returned ? "Yes" : "No"));
+            }
+        });
+
         // Load & show only this member’s borrow records
         List<BorrowRecord> recs = brDao.getMemberBorrow(memberId);
         allBorrows.setAll(recs);
         borrowedTable.setItems(allBorrows);
+
+        // Start showing only not returned
+        filteredList = new FilteredList<>(allBorrows, br -> !br.isReturned());
+        borrowedTable.setItems(filteredList);
+        filterReturned.setText("Show Returned");
 
         // Compute total fees
         double total = recs.stream()
@@ -109,5 +138,40 @@ public class BorrowedController {
                 .sum();
         totalFeesLabel.setText(NumberFormat.getCurrencyInstance().format(total));
 
+        // Disable return button unless an un-returned row is selected
+        returnButton.setDisable(true);
+        borrowedTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            boolean canReturn = newSel != null && !newSel.isReturned();
+            returnButton.setDisable(!canReturn);
+            statusField.clear();
+        });
+
+    }
+
+    public void handleReturn(ActionEvent actionEvent) {
+        BorrowRecordDAO brDao = GlobalDAO.getInstance().getBorrowRecordDAO();
+        BorrowRecord br = borrowedTable.getSelectionModel().getSelectedItem();
+        if (br == null || br.isReturned()) return;
+
+        // 1) Update the DB
+        br.setIsReturned(true);
+        brDao.update(br);
+
+        // 2) Update the local object & refresh table
+        borrowedTable.refresh();
+
+        // 3) Disable button & show status
+        returnButton.setDisable(true);
+        statusField.setText("Returned on " + LocalDate.now());
+    }
+
+    public void handleFilter(ActionEvent actionEvent) {
+        if ("Show Returned".equals(filterReturned.getText())) {
+            filteredList.setPredicate(br -> true);
+            filterReturned.setText("Hide Returned");
+        } else {
+            filteredList.setPredicate(br -> !br.isReturned());
+            filterReturned.setText("Show Returned");
+        }
     }
 }
