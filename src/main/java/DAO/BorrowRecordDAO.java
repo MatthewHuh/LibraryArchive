@@ -40,10 +40,9 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
                 int borrow_record_id = rs.getInt("borrow_record_id");
                 int member_id = rs.getInt("member_id");
                 int book_id = rs.getInt("book_id");
-                int late_fee = rs.getInt("late_fee");
                 Date return_date = rs.getDate("return_date");
 
-                borrowRecord = new BorrowRecord(borrow_record_id, member_id, book_id, late_fee, return_date);
+                borrowRecord = new BorrowRecord(borrow_record_id, member_id, book_id, return_date);
                 return borrowRecord;
             }
         }
@@ -56,6 +55,45 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
         return borrowRecord;
+    }
+
+    public List<BorrowRecord> getMemberBorrow(int id) {
+        //initialize variables
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<BorrowRecord> borrowRecords = new ArrayList<>();
+
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+            //prepare statement
+            String query = "SELECT * FROM borrow_record WHERE member_id=?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+            //execute query
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                int borrow_record_id = rs.getInt("borrow_record_id");
+                int member_id = rs.getInt("member_id");
+                int book_id = rs.getInt("book_id");
+                Date return_date = rs.getDate("return_date");
+                borrowRecords.add(new BorrowRecord(borrow_record_id, member_id, book_id, return_date ));
+
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace(); //can have more robust logging
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return borrowRecords;
     }
 
     @Override
@@ -81,9 +119,8 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
                 int borrow_record_id = rs.getInt("borrow_record_id");
                 int member_id = rs.getInt("member_id");
                 int book_id = rs.getInt("book_id");
-                int late_fee = rs.getInt("late_fee");
                 Date return_date = rs.getDate("return_date");
-                borrowRecords.add(new BorrowRecord(borrow_record_id, member_id, book_id, late_fee, return_date ));
+                borrowRecords.add(new BorrowRecord(borrow_record_id, member_id, book_id, return_date ));
 
             }
         }
@@ -109,12 +146,11 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             //get connection
             connection = ds.getConnection();
             //prepare statement
-            String query = "INSERT INTO borrow_record (member_id, book_id, late_fee, return_date) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO borrow_record (member_id, book_id, return_date) VALUES (?, ?, ?)";
             ps = connection.prepareStatement(query);
             ps.setInt(1, borrowRecord.getMemberID());
             ps.setInt(2, borrowRecord.getBookID());
-            ps.setInt(3, borrowRecord.getLateFee());
-            ps.setDate(4, borrowRecord.getReturnDate());
+            ps.setDate(3, borrowRecord.getReturnDate());
 
             //execute update
             rs = ps.executeUpdate();
@@ -143,12 +179,11 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             connection = ds.getConnection();
 
             //prepare statement
-            String query = "UPDATE borrow_record SET member_id = ?, book_id = ?, late_fee = ?, return_date = ? WHERE library_id = ?";
+            String query = "UPDATE borrow_record SET member_id = ?, book_id = ?, return_date = ? WHERE library_id = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, borrowRecord.getMemberID());
             ps.setInt(2, borrowRecord.getBookID());
-            ps.setInt(3, borrowRecord.getLateFee());
-            ps.setDate(4, borrowRecord.getReturnDate());
+            ps.setDate(3, borrowRecord.getReturnDate());
 
             //execute update
             rs = ps.executeUpdate();
