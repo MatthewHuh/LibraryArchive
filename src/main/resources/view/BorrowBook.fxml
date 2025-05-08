@@ -41,6 +41,7 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Button fx:id="borrowButton" onAction="#handleBorrowButton" text="Borrow" />
+            <Button fx:id="returnToBrowsingButton" onAction="#handleReturnToBrowsingButton" text="Return to Browsing" />
             <Label text="Status:" />
             <TextField fx:id="borrowStatusField" editable="false" HBox.hgrow="ALWAYS" />
         </HBox>

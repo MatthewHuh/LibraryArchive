@@ -30,16 +30,12 @@ public class SearchController  {
 
     @FXML
     public TableColumn<BookInfo, String> colTitle;
-
     @FXML
     public TableColumn<BookInfo, String> colAuthor;
-
     @FXML
     public TableColumn<BookInfo, String> colISBN;
-
     @FXML
     public TableColumn<BookInfo, String> colGenre;
-
     @FXML
     public TableColumn<BookInfo, LocalDate> colYear;
 
@@ -68,12 +64,8 @@ public class SearchController  {
 
         BookInfoDao bookInfoDao = GlobalDAO.getInstance().getBookInfoDAO();
         List<BookInfo> initialBooks = bookInfoDao.getAll();
-        if (initialBooks != null) {
-            allBooks.addAll(initialBooks);
-        }
-
-
-        filteredBooks = new FilteredList<>(allBooks, p -> true);
+        allBooks.addAll(initialBooks);
+        filteredBooks = new FilteredList<>(allBooks, book -> true);
         resultsTable.setItems(filteredBooks);
         resultsTable.setOnMouseClicked(this::handleRowClick);
 
@@ -82,11 +74,10 @@ public class SearchController  {
 
     private void handleRowClick(javafx.scene.input.MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2 || mouseEvent.getClickCount() == 1) {
-            URL url = getClass().getResource("/view/BorrowBook.fxml");
             BookInfo selectedBook = resultsTable.getSelectionModel().getSelectedItem();
             try {
+                URL url = getClass().getResource("/view/BorrowBook.fxml");
                 FXMLLoader loader = new FXMLLoader(url);
-
                 BorrowBookController controller = new BorrowBookController(selectedBook);
                 loader.setController(controller);
                 Parent root = loader.load();

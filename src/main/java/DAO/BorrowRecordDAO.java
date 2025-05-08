@@ -215,7 +215,7 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             //get connection
             connection = ds.getConnection();
             //prepare statement
-            String query = "SELECT b.book_id, bi.title, l.name as library_name, l.address as library_address FROM book_info bi INNER JOIN books b ON bi.isbn = b.isbn INNER JOIN libraries l ON b.library_id = l.library_id WHERE bi.isbn = ? ";
+            String query = "SELECT b.book_id, b.is_available, bi.title, l.name as library_name, l.address as library_address FROM book_info bi INNER JOIN books b ON bi.isbn = b.isbn INNER JOIN libraries l ON b.library_id = l.library_id WHERE bi.isbn = ? ";
 
             ps = connection.prepareStatement(query);
             ps.setString(1, isbn);
@@ -228,10 +228,11 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
                 String title = rs.getString("title");
                 String library_name = rs.getString("library_name");
                 String library_address = rs.getString("library_address");
+                boolean is_available = rs.getBoolean("is_available");
                 //return date is just two weeks from now
                 LocalDate futureDate = LocalDate.now().plusWeeks(2);;
                 Date returnDate = Date.valueOf(futureDate);
-                borrowDisplayObjectList.add(new BorrowDisplayObject(book_id, title, isbn, true, returnDate, library_name, library_address));
+                borrowDisplayObjectList.add(new BorrowDisplayObject(book_id, title, isbn, is_available, returnDate, library_name, library_address));
             }
 
         }

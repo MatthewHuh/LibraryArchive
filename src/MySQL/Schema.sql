@@ -46,8 +46,12 @@ CREATE TABLE IF NOT EXISTS borrow_record (
     member_id INTEGER NOT NULL,
     book_id INTEGER NOT NULL,
     return_date DATE NOT NULL,
-    is_returned BOOLEAN NOT NULL,
+    is_returned BOOLEAN NOT NULL DEFAULT 0,
     PRIMARY KEY (borrow_record_id),
     FOREIGN KEY (member_id) REFERENCES members(member_id),
     FOREIGN KEY (book_id) REFERENCES books(book_id)
     );
+
+CREATE TRIGGER IF NOT EXISTS checkout_book
+    AFTER INSERT ON borrow_record FOR EACH ROW
+    UPDATE books b SET is_available = 0 WHERE b.book_id = NEW.book_id;
