@@ -139,6 +139,40 @@ public class BookInfoDao implements DAO<BookInfo> {
         return bookInfoList;
     }
     //insert returns number of rows changed
+
+    public List<String> getGenre() {
+        //initialize variables
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<String> genreList = new ArrayList<>();
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+            //prepare statement
+            String query = "SELECT DISTINCT genre FROM book_info";
+            ps = connection.prepareStatement(query);
+            //execute query
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                String genre = rs.getString("genre");
+                genreList.add(genre);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace(); //can have more robust logging
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return genreList;
+    }
+
     @Override
     public int insert(BookInfo bookInfo) {
         Connection connection = null;
