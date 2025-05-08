@@ -79,6 +79,7 @@
                 <HBox alignment="CENTER_RIGHT" spacing="10">
                     <Button fx:id="cancelButton" onAction="#handleCancel" text="Cancel" />
                     <Button fx:id="saveButton" onAction="#handleSave" text="Save Changes" />
+                    <Button fx:id="deleteButton" onAction="#handleDelete" text="Delete Account" />
                 </HBox>
             </VBox>
         </VBox>

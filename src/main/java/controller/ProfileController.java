@@ -3,6 +3,7 @@ package controller;
 import DAO.MemberDAO;
 import POJO.Member;
 import POJO.Singleton.CommonObjs;
+import POJO.Singleton.GlobalDAO;
 import POJO.Singleton.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 public class ProfileController {
@@ -291,5 +293,59 @@ public class ProfileController {
 
     public void handleCancel(ActionEvent actionEvent) {
         loadContent("/view/HomeContent.fxml");
+    }
+
+    public void handleDelete(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure you want to proceed?");
+        alert.setContentText("This action cannot be undone.");
+
+        // Customize the buttons (optional)
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        // Show the dialog and wait for a response
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == buttonTypeYes) {
+            //check if user has checked out books
+            if (GlobalDAO.getInstance().getBorrowRecordDAO().hasActiveBorrowRecord(Session.get().getMember().getMemberId())) {
+                //alert user they must return books before deleting their account
+                Alert returnAlert = new Alert(Alert.AlertType.INFORMATION);
+                returnAlert.setTitle("Account Deletion");
+                returnAlert.setHeaderText("Account Deletion Failed");
+                returnAlert.setContentText("Please return your books before proceeding.");
+                returnAlert.showAndWait();
+            }
+            //delete user
+            else {
+                GlobalDAO.getInstance().getMemberDAO().delete(Session.get().getMember().getMemberId());
+                Alert returnAlert = new Alert(Alert.AlertType.INFORMATION);
+                returnAlert.setTitle("Account Deletion");
+                returnAlert.setHeaderText("Account Deletion Success");
+                returnAlert.showAndWait();
+
+                //signout the user
+                try{
+                    Session.get().setMember(null);
+                    Parent home = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
+                    Stage st   = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                    st.setScene(new Scene(home));
+                    st.sizeToScene();
+                    st.centerOnScreen();
+                } catch (IOException e) {
+                // 1) Log the error
+                e.printStackTrace();
+
+                // 2) Inform the user
+                Alert navigationError = new Alert(Alert.AlertType.ERROR);
+                navigationError.setTitle("Navigation Error");
+                navigationError.setHeaderText("Could not load Login Page");
+                navigationError.setContentText("Please try again or contact support.");
+                navigationError.showAndWait();
+                }
+            }
+        }
     }
 }

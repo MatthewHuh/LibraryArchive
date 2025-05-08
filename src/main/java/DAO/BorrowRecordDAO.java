@@ -209,6 +209,7 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
         return rs;
     }
 
+    //Used for displaying all information related to a book
     public List<BorrowDisplayObject> getBorrowDisplayObject(String isbn) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -221,7 +222,6 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             connection = ds.getConnection();
             //prepare statement
             String query = "SELECT b.book_id, b.is_available, bi.title, l.name as library_name, l.address as library_address FROM book_info bi INNER JOIN books b ON bi.isbn = b.isbn INNER JOIN libraries l ON b.library_id = l.library_id WHERE bi.isbn = ? ";
-
             ps = connection.prepareStatement(query);
             ps.setString(1, isbn);
             //execute query
@@ -250,6 +250,39 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
         return borrowDisplayObjectList;
+    }
+
+    public boolean hasActiveBorrowRecord(int id) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+
+            //prepare statement
+            String query = "Select * FROM borrow_record WHERE member_id = ? AND is_returned = 0";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+
+            //execute query
+            rs = ps.executeQuery();
+
+            if(rs.next()){
+                return true;
+            }
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return false;
     }
 
 
