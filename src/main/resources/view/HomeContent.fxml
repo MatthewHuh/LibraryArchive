@@ -28,7 +28,15 @@
 
         <!-- Recommendations -->
         <Label fx:id="recommendLabel" styleClass="section-title" text="Recommended for You" />
-        <FlowPane fx:id="recommendPane" hgap="10" prefWrapLength="760" vgap="10" />
+        <TableView fx:id="recomendTable" prefHeight="300">
+            <columns>
+                <TableColumn fx:id="colTitle" prefWidth="200" text="Title" />
+                <TableColumn fx:id="colAuthor" prefWidth="150" text="Author" />
+                <TableColumn fx:id="colISBN" prefWidth="120" text="ISBN" />
+                <TableColumn fx:id="colGenre" prefWidth="100" text="Genre" />
+                <TableColumn fx:id="colYear" prefWidth="88.0" text="Release Date" />
+            </columns>
+        </TableView>
 
         <!-- Quick Links -->
         <HBox fx:id="quickLinks" alignment="CENTER" spacing="15">

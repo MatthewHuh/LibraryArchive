@@ -9,13 +9,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import javafx.scene.control.TextFormatter;
 import java.util.function.UnaryOperator;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class SignUpController {
     @FXML
@@ -229,12 +228,14 @@ public class SignUpController {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
         String email = emailField.getText();
-        String password = passwordField.getText();
+        String passwordRaw = passwordField.getText();
         String phoneNumber = phoneField.getText().replaceAll("\\D", "");
+
+        String passwordHashed = hashPassword(passwordRaw);
 
         String compAddress = address + ", " + city + " " + state + " " + zip;
 
-        return new Member(null, firstName, lastName, phoneNumber, email, compAddress, password);
+        return new Member(null, firstName, lastName, phoneNumber, email, compAddress, passwordHashed);
     }
 
     private boolean isValid() {
@@ -255,6 +256,11 @@ public class SignUpController {
             flag = false;
         }
         return flag;
+    }
+
+    private String hashPassword(String plain) {
+        String salt = BCrypt.gensalt(12);
+        return BCrypt.hashpw(plain, salt);
     }
 
     public void handleGoToLogin(ActionEvent actionEvent) {

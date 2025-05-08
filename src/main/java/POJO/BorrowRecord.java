@@ -6,15 +6,12 @@ public class BorrowRecord {
 	private int borrowRecordID;
 	private int memberID;
 	private int bookID;
-	private int lateFee;
 	private Date returnDate;
 	
-	public BorrowRecord(int borrowRecordID, int memberID, int bookID,
-			int lateFee, Date returnDate) {
+	public BorrowRecord(int borrowRecordID, int memberID, int bookID, Date returnDate) {
 		this.borrowRecordID = borrowRecordID;
 		this.memberID = memberID;
 		this.bookID = bookID;
-		this.lateFee = lateFee;
 		this.returnDate = returnDate;
 	}
 	
@@ -24,10 +21,6 @@ public class BorrowRecord {
 	
 	public int getBorrowRecordID() {
 		return borrowRecordID;
-	}
-	
-	public int getLateFee() {
-		return lateFee;
 	}
 	
 	public int getMemberID() {
@@ -44,10 +37,6 @@ public class BorrowRecord {
 	
 	public void setBorrowRecordID(int borrowRecordID) {
 		this.borrowRecordID = borrowRecordID;
-	}
-	
-	public void setLateFee(int lateFee) {
-		this.lateFee = lateFee;
 	}
 	
 	public void setMemberID(int memberID) {

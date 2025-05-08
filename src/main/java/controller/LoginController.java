@@ -3,8 +3,10 @@ package controller;
 import DAO.MemberDAO;
 import POJO.Singleton.CommonObjs;
 import POJO.Member;
+import POJO.Singleton.GlobalDAO;
 import POJO.Singleton.Session;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -17,11 +19,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class LoginController {
+import org.mindrot.jbcrypt.BCrypt;
 
+public class LoginController {
+    @FXML
     public PasswordField passwordField;
+    @FXML
     public TextField emailField;
+    @FXML
     public Label passwordError;
+    @FXML
     public Label emailError;
 
     private boolean isInput() {
@@ -42,11 +49,12 @@ public class LoginController {
     public void handleLogin(ActionEvent actionEvent) {
         if(isInput()) {
             String email = emailField.getText();
-            String password = passwordField.getText();
+            String inputPassword = passwordField.getText();
 
-            MemberDAO memberDAO = new MemberDAO();
-            Member member = memberDAO.login(email, password);
-            if (member != null) {
+            MemberDAO memberDAO = GlobalDAO.getInstance().getMemberDAO();
+            Member member = memberDAO.getMember(email);
+            String storedHash = member.getHashedPassword();
+            if (BCrypt.checkpw(inputPassword, storedHash)) {
                 try {
                     Session.get().setMember(member);
                     BorderPane home = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
