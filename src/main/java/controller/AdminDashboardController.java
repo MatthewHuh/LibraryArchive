@@ -1,19 +1,48 @@
 package controller;
 
 import DAO.BookInfoDao;
-import POJO.Book;
-import POJO.BookInfo;
-import POJO.Library;
+import POJO.*;
 import POJO.Singleton.GlobalDAO;
+import POJO.Singleton.Session;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
 public class AdminDashboardController {
+
+    //delete form components
+    @FXML
+    private TextField deleteIsbnField;
+    @FXML
+    private TextField deleteStatusField;
+    @FXML
+    private TableColumn colBorrowTitle;
+    @FXML
+    private TableColumn colBorrowISBN;
+    @FXML
+    private TableColumn colLibraryName;
+    @FXML
+    private TableColumn colLibraryAddress;
+    @FXML
+    public TableColumn<BorrowDisplayObject, Boolean> colIsAvailable;
+    @FXML
+    private TableView<BorrowDisplayObject> bookTable;
+
+
+    private FilteredList<BorrowDisplayObject> deletableBooksFiltered;
+
+    private ObservableList<BorrowDisplayObject> deletableBooks = FXCollections.observableArrayList();
 
     @FXML
     private Button addEditButton;
@@ -114,6 +143,7 @@ public class AdminDashboardController {
     @FXML
     private TextField newTitleField;
 
+
     @FXML
     public void initialize() {
         UnaryOperator<TextFormatter.Change> authorFilter = change -> {
@@ -149,6 +179,15 @@ public class AdminDashboardController {
         for (Library library : libraries) {
             libraryComboBox.getItems().add(library);
         }
+
+        //delete table initialization
+        colBorrowTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colBorrowISBN.setCellValueFactory(new PropertyValueFactory<>("ISBN"));
+        colLibraryName.setCellValueFactory(new PropertyValueFactory<>("LibraryName"));
+        colLibraryAddress.setCellValueFactory(new PropertyValueFactory<>("LibraryAddress"));
+        colIsAvailable.setCellValueFactory(cellData -> new SimpleBooleanProperty(!cellData.getValue().getAvailable()));
+        colIsAvailable.setCellFactory(tc -> new CheckBoxTableCell<>());
+        colIsAvailable.setEditable(false);
     }
 
     private boolean isInputBookInfo() {
@@ -358,5 +397,30 @@ public class AdminDashboardController {
             year =  editDateField.getValue();
         }
         return new BookInfo(isbn, author, genre, title, year);
+    }
+
+    //delete books
+    public void onBasicSearch(ActionEvent actionEvent) {
+        String isbn = deleteIsbnField.getText().trim();
+        List<BorrowDisplayObject> borrowDisplayObjects = GlobalDAO.getInstance().getBorrowRecordDAO().getBorrowDisplayObject(isbn);
+        if (borrowDisplayObjects.isEmpty()) {
+            deleteStatusField.setText("Books Not Found");
+        }
+        deletableBooks.addAll(borrowDisplayObjects);
+        deletableBooksFiltered = new FilteredList<>(deletableBooks, p->true);
+        bookTable.setItems(deletableBooksFiltered);
+    }
+
+    public void deleteBook(ActionEvent actionEvent) {
+        BorrowDisplayObject selectedItem = bookTable.getSelectionModel().getSelectedItem();
+        if(selectedItem != null) {
+            GlobalDAO.getInstance().getBookDAO().delete(selectedItem.getBookID());
+            deletableBooks.remove(selectedItem);
+            bookTable.getSelectionModel().clearSelection();
+            deleteStatusField.setText("Book deleted successfully");
+        }
+        else{
+            deleteStatusField.setText("Book already deleted successfully");
+        }
     }
 }

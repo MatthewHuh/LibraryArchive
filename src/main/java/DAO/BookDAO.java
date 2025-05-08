@@ -157,4 +157,31 @@ public class BookDAO implements DAO<Book> {
         return rs;
     }
 
+    public int delete(int book_id) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        int rs = 0;
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+
+            //prepare statement
+            String query = "DELETE FROM books WHERE book_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, book_id);
+
+            //execute update
+            rs = ps.executeUpdate();
+            return rs;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+    }
+
 }

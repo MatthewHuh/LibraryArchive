@@ -46,7 +46,7 @@ public class BorrowDisplayObject {
         this.isbn = isbn;
     }
 
-    public boolean isAvailable() {
+    public boolean getAvailable() {
         return isAvailable;
     }
 
