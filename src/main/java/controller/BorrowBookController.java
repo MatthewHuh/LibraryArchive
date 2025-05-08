@@ -38,6 +38,10 @@ public class BorrowBookController {
 
     public TextField borrowStatusField;
 
+    public Button showButton;
+
+    public Button borrowButton;
+
     private BookInfo currentBook;
 
     private FilteredList<BorrowDisplayObject> filteredBooks;
@@ -79,7 +83,15 @@ public class BorrowBookController {
         }
     }
 
-
+    public void showHandle(ActionEvent actionEvent) {
+        if ("Show All".equals(showButton.getText())) {
+            filteredBooks.setPredicate(br -> true);
+            showButton.setText("Hide Unavailable");
+        } else {
+            filteredBooks.setPredicate(br -> br.getAvailable());
+            showButton.setText("Show All");
+        }
+    }
 
     public void initialize() {
         colBorrowTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -91,12 +103,17 @@ public class BorrowBookController {
         colIsAvailable.setCellFactory(tc -> new CheckBoxTableCell<>());
         colIsAvailable.setEditable(false);
 
-
-
         List<BorrowDisplayObject> borrowDisplayObjects = GlobalDAO.getInstance().getBorrowRecordDAO().getBorrowDisplayObject(currentBook.getISBN());
         borrowableBooksList.addAll(borrowDisplayObjects);
         filteredBooks = new FilteredList<>(borrowableBooksList, BorrowDisplayObject::getAvailable);
         borrowBookTable.setItems(filteredBooks);
+
+        borrowButton.setDisable(true);
+        borrowBookTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            boolean canBorrow = newSel != null && newSel.getAvailable();
+            borrowButton.setDisable(!canBorrow);
+            borrowStatusField.clear();
+        });
     }
 
 

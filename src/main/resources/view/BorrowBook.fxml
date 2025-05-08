@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" >
+<BorderPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <VBox alignment="TOP_CENTER" BorderPane.alignment="TOP_CENTER">
             <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Borrow Book" />
@@ -16,21 +22,30 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label text="Select a book from the table below and click &quot;Borrow&quot;." wrapText="true">
-                <style>
+         <HBox>
+            <children>
+                  <Label text="Select a book from the table below and click &quot;Borrow&quot;." wrapText="true">
+                      <style>
                     -fx-font-size: 14px;
                     -fx-text-fill: #555; /* Optional:  Soften the color a bit */
                 </style>
-            </Label>
+                  </Label>
+               <HBox alignment="BOTTOM_RIGHT" prefHeight="0.0" prefWidth="424.0" HBox.hgrow="ALWAYS">
+                  <children>
+                     <Button fx:id="showButton" mnemonicParsing="false" onAction="#showHandle" text="Show All" />
+                  </children>
+               </HBox>
+            </children>
+         </HBox>
 
             <TableView fx:id="borrowBookTable" prefHeight="300.0" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colBorrowTitle" prefWidth="200.0" text="Title" />
                     <TableColumn fx:id="colBorrowISBN" prefWidth="120.0" text="ISBN" />
-                    <TableColumn fx:id="colLibraryName" prefWidth="120.0" text="Library Name"/>
-                    <TableColumn fx:id="colLibraryAddress" prefWidth="120.0" text="Library Address"/>
-                    <TableColumn fx:id="colBorrowDueDate" prefWidth="120.0" text="Return Date"/>
-                    <TableColumn fx:id="colIsAvailable" prefWidth="120.0" text="Check Out Status"/>
+                    <TableColumn fx:id="colLibraryName" prefWidth="120.0" text="Library Name" />
+                    <TableColumn fx:id="colLibraryAddress" prefWidth="120.0" text="Library Address" />
+                    <TableColumn fx:id="colBorrowDueDate" prefWidth="120.0" text="Return Date" />
+                    <TableColumn fx:id="colIsAvailable" prefWidth="120.0" text="Check Out Status" />
                 </columns>
             </TableView>
         </VBox>
