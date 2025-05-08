@@ -53,35 +53,42 @@ public class LoginController {
 
             MemberDAO memberDAO = GlobalDAO.getInstance().getMemberDAO();
             Member member = memberDAO.getMember(email);
-            String storedHash = member.getHashedPassword();
-            if (BCrypt.checkpw(inputPassword, storedHash)) {
-                try {
-                    Session.get().setMember(member);
-                    BorderPane home = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
-                    Stage  st   = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-                    st.setScene(new Scene(home));
-                    st.sizeToScene();
-                    st.centerOnScreen();
+            if(member != null) {
+                String storedHash = member.getHashedPassword();
+                if (BCrypt.checkpw(inputPassword, storedHash)) {
+                    try {
+                        Session.get().setMember(member);
+                        BorderPane home = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
+                        Stage  st   = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                        st.setScene(new Scene(home));
+                        st.sizeToScene();
+                        st.centerOnScreen();
 
-                    CommonObjs commonObjs = CommonObjs.getInstance();
-                    commonObjs.setBorderPane(home);
+                        CommonObjs commonObjs = CommonObjs.getInstance();
+                        commonObjs.setBorderPane(home);
 
-                } catch (IOException e) {
-                    // 1) Log the error
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        // 1) Log the error
+                        e.printStackTrace();
 
-                    // 2) Inform the user
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Navigation Error");
-                    alert.setHeaderText("Could not load Home Page");
-                    alert.setContentText("Please try again or contact support.");
-                    alert.showAndWait();
+                        // 2) Inform the user
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Navigation Error");
+                        alert.setHeaderText("Could not load Home Page");
+                        alert.setContentText("Please try again or contact support.");
+                        alert.showAndWait();
+                    }
+                }
+                else {
+                    passwordError.setText("Email or password is incorrect");
+                    passwordError.setVisible(true);
                 }
             }
             else {
                 passwordError.setText("Email or password is incorrect");
                 passwordError.setVisible(true);
             }
+
         }
 
     }
