@@ -27,9 +27,10 @@
                 <columns>
                     <TableColumn fx:id="colBorrowTitle" prefWidth="200.0" text="Title" />
                     <TableColumn fx:id="colBorrowISBN" prefWidth="120.0" text="ISBN" />
-                    <TableColumn fx:id="colLibraryName" prefWidth="120.0" text="Library"/>
-                    <TableColumn fx:id="colLibraryAddress" prefWidth="120.0" text="Library"/>
+                    <TableColumn fx:id="colLibraryName" prefWidth="120.0" text="Library Name"/>
+                    <TableColumn fx:id="colLibraryAddress" prefWidth="120.0" text="Library Address"/>
                     <TableColumn fx:id="colBorrowDueDate" prefWidth="120.0" text="Return Date"/>
+                    <TableColumn fx:id="colIsAvailable" prefWidth="120.0" text="Check Out Status"/>
                 </columns>
             </TableView>
         </VBox>

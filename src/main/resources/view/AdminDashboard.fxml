@@ -147,6 +147,39 @@
                 </content>
             </TitledPane>
 
+            <!-- Delete Book -->
+            <TitledPane expanded="false" text="Delete A Book">
+                <content>
+                    <VBox spacing="15.0" BorderPane.alignment="CENTER">
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
+                        <TextField fx:id="deleteIsbnField" promptText="Enter the ISBN of the book to be deleted" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="basicSearchButton" onAction="#onBasicSearch" text="Search" />
+                        <Label text="Select a book from the table below and click &quot;Delete&quot;." wrapText="true">
+                            <style>
+                                -fx-font-size: 14px;
+                                -fx-text-fill: #555; /* Optional:  Soften the color a bit */
+                            </style>
+                        </Label>
+
+                        <TableView fx:id="bookTable" prefHeight="300.0" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colBorrowTitle" prefWidth="200.0" text="Title" />
+                                <TableColumn fx:id="colBorrowISBN" prefWidth="120.0" text="ISBN" />
+                                <TableColumn fx:id="colLibraryName" prefWidth="120.0" text="Library Name"/>
+                                <TableColumn fx:id="colLibraryAddress" prefWidth="120.0" text="Library Address"/>
+                                <TableColumn fx:id="colIsAvailable" prefWidth="120.0" text="Check Out Status"/>
+                            </columns>
+                        </TableView>
+
+                        <Button fx:id="deleteButton" onAction="#deleteBook" text="Delete Book" />
+                        <Label text="Status:" />
+                        <TextField fx:id="deleteStatusField" editable="false" HBox.hgrow="ALWAYS" />
+                    </VBox>
+                </content>
+            </TitledPane>
+
         </VBox>
     </content>
 </ScrollPane>
