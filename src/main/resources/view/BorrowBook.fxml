@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" >
+    <top>
+        <VBox alignment="TOP_CENTER" BorderPane.alignment="TOP_CENTER">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Borrow Book" />
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="15.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <Label text="Select a book from the table below and click &quot;Borrow&quot;." wrapText="true">
+                <style>
+                    -fx-font-size: 14px;
+                    -fx-text-fill: #555; /* Optional:  Soften the color a bit */
+                </style>
+            </Label>
+
+            <TableView fx:id="borrowBookTable" prefHeight="300.0" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colBorrowTitle" prefWidth="200.0" text="Title" />
+                    <TableColumn fx:id="colBorrowISBN" prefWidth="120.0" text="ISBN" />
+                    <TableColumn fx:id="colLibraryName" prefWidth="120.0" text="Library"/>
+                    <TableColumn fx:id="colLibraryAddress" prefWidth="120.0" text="Library"/>
+                    <TableColumn fx:id="colBorrowDueDate" prefWidth="120.0" text="Return Date"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="BOTTOM_LEFT">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <Button fx:id="borrowButton" onAction="#handleBorrowButton" text="Borrow" />
+            <Button fx:id="returnToBrowsingButton" onAction="#handleReturnToBrowsingButton" text="Return to Browsing" />
+            <Label text="Status:" />
+            <TextField fx:id="borrowStatusField" editable="false" HBox.hgrow="ALWAYS" />
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -2,20 +2,26 @@ package controller;
 
 import DAO.BookInfoDao;
 import POJO.BookInfo;
+import POJO.Singleton.CommonObjs;
 import POJO.Singleton.GlobalDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+
+
+import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+
 
 public class SearchController  {
 
@@ -24,16 +30,12 @@ public class SearchController  {
 
     @FXML
     public TableColumn<BookInfo, String> colTitle;
-
     @FXML
     public TableColumn<BookInfo, String> colAuthor;
-
     @FXML
     public TableColumn<BookInfo, String> colISBN;
-
     @FXML
     public TableColumn<BookInfo, String> colGenre;
-
     @FXML
     public TableColumn<BookInfo, LocalDate> colYear;
 
@@ -62,14 +64,34 @@ public class SearchController  {
 
         BookInfoDao bookInfoDao = GlobalDAO.getInstance().getBookInfoDAO();
         List<BookInfo> initialBooks = bookInfoDao.getAll();
-        if (initialBooks != null) {
-            allBooks.addAll(initialBooks);
-        }
-
-
-        filteredBooks = new FilteredList<>(allBooks, p -> true);
+        allBooks.addAll(initialBooks);
+        filteredBooks = new FilteredList<>(allBooks, book -> true);
         resultsTable.setItems(filteredBooks);
+        resultsTable.setOnMouseClicked(this::handleRowClick);
+
     }
+
+
+    private void handleRowClick(javafx.scene.input.MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2 || mouseEvent.getClickCount() == 1) {
+            BookInfo selectedBook = resultsTable.getSelectionModel().getSelectedItem();
+            try {
+                URL url = getClass().getResource("/view/BorrowBook.fxml");
+                FXMLLoader loader = new FXMLLoader(url);
+                BorrowBookController controller = new BorrowBookController(selectedBook);
+                loader.setController(controller);
+                Parent root = loader.load();
+
+                CommonObjs.getInstance().getBorderPane().setCenter(root);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+
 
     public void onBasicSearch(ActionEvent actionEvent) {
         String titleFilter = basicSearchField.getText().toLowerCase();
@@ -136,4 +158,5 @@ public class SearchController  {
             return titleMatch && authorMatch && isbnMatch && genreMatch && yearMatch;
         });
     }
+
 }

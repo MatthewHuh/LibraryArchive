@@ -1,14 +1,17 @@
 package DAO;
 
 
+import POJO.BorrowDisplayObject;
 import POJO.BorrowRecord;
-import POJO.Library;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+
 
 public class BorrowRecordDAO implements DAO<BorrowRecord> {
 
@@ -200,5 +203,50 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
 
         return rs;
     }
+
+    public List<BorrowDisplayObject> getBorrowDisplayObject(String isbn) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<BorrowDisplayObject> borrowDisplayObjectList = new ArrayList<>();
+
+        try{
+            //get connection
+            connection = ds.getConnection();
+            //prepare statement
+            String query = "SELECT b.book_id, b.is_available, bi.title, l.name as library_name, l.address as library_address FROM book_info bi INNER JOIN books b ON bi.isbn = b.isbn INNER JOIN libraries l ON b.library_id = l.library_id WHERE bi.isbn = ? ";
+
+            ps = connection.prepareStatement(query);
+            ps.setString(1, isbn);
+            //execute query
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+
+                int book_id = rs.getInt("book_id");
+                String title = rs.getString("title");
+                String library_name = rs.getString("library_name");
+                String library_address = rs.getString("library_address");
+                boolean is_available = rs.getBoolean("is_available");
+                //return date is just two weeks from now
+                LocalDate futureDate = LocalDate.now().plusWeeks(2);;
+                Date returnDate = Date.valueOf(futureDate);
+                borrowDisplayObjectList.add(new BorrowDisplayObject(book_id, title, isbn, is_available, returnDate, library_name, library_address));
+            }
+
+        }
+        catch (SQLException e){
+            e.printStackTrace(); //can have more robust logging
+        }
+        finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
+            try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return borrowDisplayObjectList;
+    }
+
+
 
 }
