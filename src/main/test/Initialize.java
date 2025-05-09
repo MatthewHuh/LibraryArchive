@@ -1,3 +1,5 @@
+package main.test;
+
 import io.github.cdimascio.dotenv.Dotenv;
 import org.mindrot.jbcrypt.BCrypt;
 

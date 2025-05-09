@@ -44,7 +44,7 @@ public class LibraryDao implements DAO<Library> {
             }
         }
         catch(SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "LibraryDAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -81,7 +81,7 @@ public class LibraryDao implements DAO<Library> {
             }
         }
         catch (SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "LibraryDAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -112,7 +112,7 @@ public class LibraryDao implements DAO<Library> {
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "LibraryDAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -146,7 +146,7 @@ public class LibraryDao implements DAO<Library> {
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace();
+            DAO.logSQLException(e, "LibraryDAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }

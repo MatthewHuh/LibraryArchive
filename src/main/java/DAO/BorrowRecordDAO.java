@@ -51,7 +51,7 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             }
         }
         catch(SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "Borrow Record DAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -91,7 +91,7 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             }
         }
         catch (SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "Borrow Record DAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -131,7 +131,7 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             }
         }
         catch (SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "Borrow Record DAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -163,7 +163,7 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "Borrow Record DAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -199,7 +199,7 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace();
+            DAO.logSQLException(e, "Borrow Record DAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -242,7 +242,7 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
 
         }
         catch (SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "Borrow Record DAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -275,9 +275,10 @@ public class BorrowRecordDAO implements DAO<BorrowRecord> {
             return false;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            DAO.logSQLException(e, "Borrow Record DAO");
         }
         finally {
+            //close
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
