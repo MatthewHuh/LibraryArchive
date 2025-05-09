@@ -1,3 +1,34 @@
+## Project Overview
+
+The **Library Management System** is a desktop application built with JavaFX, JDBC, and MySQL to members to borrow return book online. It follows a three-tier architecture:
+
+1. **Presentation Layer**  
+   - JavaFX & FXML for a responsive, form-driven UI  
+   - Inline validation and user feedback via CSS-styled error labels  
+2. **Logic Layer**  
+   - DAO pattern with plain JDBC and HikariCP connection pooling  
+   - Business rules (e.g., borrowing limits, late-fee calculations, BCrypt password hashing) encapsulated in service and DAO classes  
+3. **Data Layer**  
+   - MySQL schema normalized to BCNF, with tables for `book_info`, `books`, `members`, `libraries`, and `borrow_record`  
+   - Referential integrity enforced by foreign keys  
+
+Key features include:
+
+- **Secure Authentication**: Sign up and log in with BCrypt-hashed passwords  
+- **Book Catalog**: Browse “New Arrivals” and “Recommended” sections, search by title, author, ISBN, genre, or year  
+- **CRUD Operations**: Add, edit, and delete members, books, and borrow records via intuitive JavaFX forms  
+- **Borrow/Return Workflow**: Real-time availability toggling, due-date reminders, late-fee computation, and return processing  
+- **Admin Dashboard**: Declare new book titles and allocate copies to library branches  
+
+
+
+
+
+
+
+
+
+
 Set Up Instructions
 ## 🚀 Getting Started
 
@@ -102,48 +133,6 @@ then click apply and ok
 
 then run the application using the run configuration and clicing the green run arrow.
 ![image](https://github.com/user-attachments/assets/f5b049ca-e387-4e58-a2f5-ad6e1d3b9555)
-
-
-
-Project Code Submission
-1. Code Organization
-
-Presentation Layer:
-
-/src/main/java/controller Contains Controllers
-/src/main/resources/view Contains FXML files
-
-Database Layer:
-
-/src/main/MySQL/Schema.sql Contains the SQL script that can be used to recreate the database schema
-/src/main/test/Initialize Java script used to initalize the database with sample data
-
-Business Layer:
-
-/src/main/java/DAO contains Database Access Objects
-/src/main/java/DAO/DBConnectionPool Used to connect the application to the database.
-/src/main/java/POJO contains plain old java objects used by the DAOs
-
-2. JDBC code
-
-All JDBC code can be found within the DAO directory
-/src/main/java/DAO 
-
-3. SQL Script For Database Creation
-
-/src/main/MySQL/Schema.sql 
-
-4. Database Initialization Script
-
-/src/main/test/Initialize Java script used to initalize the database with sample data
-
-5. Error Handling and Comments:
-
-Error's are logged to console. 
-/src/main/java/DAO/DAO contains the utility function for handling database errors.
-/src/main/java/DAO/DBConnectionPool Checks if a connection was succesfully established with MySQL.
-
-6. Permissions And Path
 
 
 
