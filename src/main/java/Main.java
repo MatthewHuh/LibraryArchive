@@ -17,7 +17,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("Library Login");
+			primaryStage.setTitle("Library App");
 			primaryStage.show();
 
 			//initialize all daos
