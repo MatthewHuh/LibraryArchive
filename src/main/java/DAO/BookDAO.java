@@ -44,7 +44,7 @@ public class BookDAO implements DAO<Book> {
             }
         }
         catch(SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "BookDAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -75,7 +75,7 @@ public class BookDAO implements DAO<Book> {
                 available = rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
-            e.printStackTrace();  // or your preferred logging
+            DAO.logSQLException(e, "BookDAO");
         } finally {
             try { if (rs != null)         rs.close();       } catch (SQLException e) { e.printStackTrace(); }
             try { if (ps != null)         ps.close();       } catch (SQLException e) { e.printStackTrace(); }
@@ -113,7 +113,7 @@ public class BookDAO implements DAO<Book> {
             }
         }
         catch (SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "BookDAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -144,7 +144,7 @@ public class BookDAO implements DAO<Book> {
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace(); //can have more robust logging
+            DAO.logSQLException(e, "BookDAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -178,7 +178,7 @@ public class BookDAO implements DAO<Book> {
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace();
+            DAO.logSQLException(e, "BookDAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -207,12 +207,13 @@ public class BookDAO implements DAO<Book> {
             return rs;
         }
         catch (SQLException e) {
-            throw new RuntimeException(e);
+            DAO.logSQLException(e, "BookDAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             try { if (connection != null) connection.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
+        return rs;
     }
 
 }

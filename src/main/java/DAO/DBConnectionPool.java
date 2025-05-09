@@ -2,7 +2,11 @@ package DAO;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.pool.HikariPool;
 import io.github.cdimascio.dotenv.Dotenv;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class DBConnectionPool {
 
@@ -25,10 +29,6 @@ public class DBConnectionPool {
         String password = dotenv.get("DB_PASSWORD");
 
 
-        if (host == null || port == null || name == null || user == null || password == null) {
-            throw new RuntimeException("Missing database configuration in .env file");
-        }
-
         String url = String.format(
                 "jdbc:mysql://%s:%s/%s?useSSL=false&serverTimezone=UTC",
                 host, port, name
@@ -41,8 +41,14 @@ public class DBConnectionPool {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        dataSource = new HikariDataSource(config);
+
+        try {
+            dataSource = new HikariDataSource(config);
+        } catch( com.zaxxer.hikari.pool.HikariPool.PoolInitializationException e){
+            System.err.println("HikariCP Pool Initialization Error: " + e.getMessage());
+        }
     }
+
 
     private DBConnectionPool() {
     }

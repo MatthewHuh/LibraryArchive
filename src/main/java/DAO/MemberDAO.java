@@ -88,7 +88,7 @@ public class MemberDAO implements DAO<Member> {
             }
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            DAO.logSQLException(e, "MemberDAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -129,7 +129,7 @@ public class MemberDAO implements DAO<Member> {
             }
         }
         catch (SQLException e){
-            e.printStackTrace();
+            DAO.logSQLException(e, "MemberDAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -165,7 +165,7 @@ public class MemberDAO implements DAO<Member> {
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace();
+            DAO.logSQLException(e, "MemberDAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -194,7 +194,7 @@ public class MemberDAO implements DAO<Member> {
             }
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            DAO.logSQLException(e, "MemberDAO");
         }
         finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -232,7 +232,7 @@ public class MemberDAO implements DAO<Member> {
             return rs;
         }
         catch (SQLException e){
-            e.printStackTrace();
+            DAO.logSQLException(e, "MemberDAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
@@ -261,7 +261,7 @@ public class MemberDAO implements DAO<Member> {
 
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            DAO.logSQLException(e, "MemberDAO");
         }
         finally {
             try { if (ps != null) ps.close(); } catch (SQLException e) { e.printStackTrace(); }
