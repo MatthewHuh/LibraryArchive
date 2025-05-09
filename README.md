@@ -1,6 +1,20 @@
 Set Up Instructions
+## 🚀 Getting Started
 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+### Prerequisites
+
+- **Java 17+** JDK  
+- **Maven** (3.6+)  
+- **MySQL 8+** (or compatible)  
+- **SceneBuilder** (optional, for editing FXML)  
+
+### 1. Clone the repository
+
+bash:
+git clone https://github.com/MatthewHuh/LibraryArchive.git
+cd LibraryArchive
 
 
 Project Code Submission
