@@ -1,49 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
-<ScrollPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.HomeContentController"
-            prefHeight="550.0" prefWidth="800.0" fitToHeight="true" fitToWidth="true">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.ListView?>
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeContentController">
     <VBox fx:id="mainContainer" spacing="20">
         <padding>
             <Insets bottom="20" left="20" right="20" top="20" />
         </padding>
 
+        <Label fx:id="welcomeLabel" styleClass="home-welcome" text="Welcome back!" />
+
         <!-- Search bar -->
+        <Label fx:id="quickSearchLabel" styleClass="section-title" text="Quick Search" />
         <HBox fx:id="searchBar" alignment="CENTER" spacing="10">
-            <TextField fx:id="searchField" promptText="Search by title, author, ISBN" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="searchField" promptText="Search by title" HBox.hgrow="ALWAYS" />
             <Button fx:id="searchButton" onAction="#handelSearch" text="Search" />
         </HBox>
 
-        <!-- New Arrivals -->
-        <Label fx:id="newArrivalsLabel" styleClass="section-title" text="New Arrivals" />
-        <FlowPane fx:id="newArrivalsPane" hgap="10" prefWrapLength="760" vgap="10" />
+        <VBox styleClass="due-soon-box">
+            <Label text="Due Soon" styleClass="section-title"/>
+            <ListView fx:id="dueSoonList" prefHeight="120"/>
+        </VBox>
 
         <!-- Recommendations -->
-        <Label fx:id="recommendLabel" styleClass="section-title" text="Recommended for You" />
-        <TableView fx:id="recomendTable" prefHeight="300">
-            <columns>
-                <TableColumn fx:id="colTitle" prefWidth="200" text="Title" />
-                <TableColumn fx:id="colAuthor" prefWidth="150" text="Author" />
-                <TableColumn fx:id="colISBN" prefWidth="120" text="ISBN" />
-                <TableColumn fx:id="colGenre" prefWidth="100" text="Genre" />
-                <TableColumn fx:id="colYear" prefWidth="88.0" text="Release Date" />
-            </columns>
-        </TableView>
-
-        <!-- Quick Links -->
-        <HBox fx:id="quickLinks" alignment="CENTER" spacing="15">
-            <Button fx:id="categoriesButton" text="View All Categories" />
-            <Button fx:id="loansButton" text="My Loans" />
-            <Button fx:id="settingsButton" text="Account Settings" />
+        <HBox alignment="CENTER" styleClass="footer-bar">
+            <Label text="Mon–Fri 9 am–6 pm • support@mylibrary.com"/>
         </HBox>
-
     </VBox>
 </ScrollPane>
