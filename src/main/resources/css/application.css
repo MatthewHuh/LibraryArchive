@@ -111,3 +111,18 @@
     -fx-padding: 8 16;
     -fx-background-radius: 4;
 }
+
+.home-welcome {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;        /* dark slate for good contrast */
+    -fx-padding: 20 0 10 0;        /* top/right/bottom/left */
+    -fx-alignment: center-left;    /* if it’s in an HBox/VBox */
+}
+
+.due-soon-box {
+    -fx-background-color: white;
+    -fx-padding: 10;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
