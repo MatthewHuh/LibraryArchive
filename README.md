@@ -112,11 +112,14 @@ show tables;
 - then open Main.java in intelliJ and next to the debug button press the arrow and select edit configurations
 ![image](https://github.com/user-attachments/assets/ba272778-f6d4-44a9-8440-eb359511c52a)
 
-
 - the click on the plus icon and select application
 ![image](https://github.com/user-attachments/assets/bbd3edcc-fbd7-4604-9c06-71ba462aa589)
 
-- in the name field type "Main" in the "Build and run" click on the "modify options" and select add vm options
+- in the name field type "Main" and in "Build and run" select your Java JDk
+![image](https://github.com/user-attachments/assets/550668f3-9451-400c-87d7-ae4a6b3c7f38)
+
+  
+- in the "Build and run" click on the "modify options" and select add vm options
 ![image](https://github.com/user-attachments/assets/c18315f5-b705-411b-9c24-3e74b80f90b5)
 
 - in the vm options paste the following replacing the path with your path to your JavaFX SDK lib folder
